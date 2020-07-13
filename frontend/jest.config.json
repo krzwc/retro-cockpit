@@ -1,0 +1,26 @@
+{
+  "roots": [
+    "<rootDir>/src"
+  ],
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest",
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  "transformIgnorePatterns": [
+    "<rootDir>/node_modules/(?!lodash-es)"
+  ],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "setupFiles": ["<rootDir>/setupTests.js"],
+  "moduleNameMapper": {
+    "^.+\\.(css|less|scss)$": "babel-jest",
+    "^.+\\.(jpg|png|gif|svg)$": "<rootDir>/src/__mocks__/fileMock.js",
+    "^assets/(.*)": "<rootDir>/src/assets/$1",
+    "^components/(.*)": "<rootDir>/src/components/$1",
+    "^containers/(.*)": "<rootDir>/src/containers/$1",
+    "^hooks/(.*)": "<rootDir>/src/hooks/$1",
+    "^style/(.*)": "<rootDir>/src/style/$1",
+    "^types/(.*)": "<rootDir>/src/types/$1",
+    "^utils/(.*)": "<rootDir>/src/utils/$1"
+  }
+}

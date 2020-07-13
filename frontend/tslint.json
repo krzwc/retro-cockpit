@@ -1,0 +1,181 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-react",
+    "tslint-eslint-rules",
+    "tslint-no-circular-imports",
+    "tslint-config-prettier"
+  ],
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    /* native TSLint rules */
+    "no-implicit-dependencies": false,
+    "array-type": [true, "array"],
+    "arrow-parens": true,
+    "ban": [true, "eval", { "name": "$", "message": "no use of jQuery" }],
+    "ban-types": [
+      true,
+      ["Object", "Avoid using the `Object` type. Did you mean `object or {}`?"],
+      [
+        "Function",
+        "Avoid using the `Function` type. Prefer a specific function type, like `() => void`."
+      ],
+      ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
+      ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+      ["String", "Avoid using the `String` type. Did you mean `string`?"],
+      ["Symbol", "Avoid using the `Symbol` type. Did you mean `symbol`?"]
+    ],
+    "binary-expression-operand-order": true,
+    "comment-format": [
+      true,
+      "check-space",
+      { "ignore-pattern": "tslint" }
+    ],
+    "completed-docs": [
+      true,
+      {
+        "functions": { "visibility": ["exported"] },
+        "methods": { "locations": "all", "privacies": ["public", "protected"] }
+      }
+    ],
+    "cyclomatic-complexity": [false, 5], // NOTE: turning this on will locate methods should be refactored to reduce complexity.
+    "deprecation": true,
+    "encoding": true,
+    "import-blacklist": [true, "rxjs"],
+    "indent": [true, "spaces", 2],
+    "linebreak-style": [true, "LF"],
+    "max-line-length": [false, 120],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          /* static fields */
+          "public-static-field",
+          "protected-static-field",
+          "private-static-field",
+          /* static methods */
+          "public-static-method",
+          "protected-static-method",
+          "private-static-method",
+          /* instance fields */
+          "public-instance-field",
+          "protected-instance-field",
+          "private-instance-field",
+          /* constructor */
+          "constructor",
+          /* instance methods */
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "newline-before-return": true,
+    "no-boolean-literal-compare": true,
+    "no-consecutive-blank-lines": [true, 2],
+    "no-console": true,
+    "no-default-export": false,
+    "no-duplicate-imports": true,
+    "no-duplicate-variable": [true, "check-parameters"],
+    "no-floating-promises": true,
+    "no-for-in-array": true,
+    "no-inferred-empty-object-type": false,
+    "no-import-side-effect": [
+      true,
+      {
+        "ignore-module": "(codemirror)|(core-js)|(whatwg-fetch)|(moment-duration-format)|(fonts\\/nims\\.font)|(^rxjs\\/)|((\\.html|\\.s?css|\\.less)$)"
+      }
+    ],
+    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
+    "no-irregular-whitespace": true,
+    "no-mergeable-namespace": true,
+    "no-namespace": [true, "allow-declarations"],
+    "no-non-null-assertion": true,
+    "no-parameter-reassignment": true,
+    "no-require-imports": true,
+    "no-submodule-imports": false,
+    "no-this-assignment": [true, { "allow-destructuring": true }],
+    "no-trailing-whitespace": [true, "ignore-template-strings"],
+    "no-unbound-method": [true, "ignore-static"],
+    "no-unnecessary-callback-wrapper": true,
+    "no-unnecessary-qualifier": true,
+    "no-unnecessary-type-assertion": true,
+    "no-unused-expression": [true],
+    "no-void-expression": [true, "ignore-arrow-function-shorthand"],
+    "number-literal-format": true,
+    "object-literal-key-quotes": [true, "as-needed"],
+    "object-literal-shorthand": true,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "prefer-conditional-expression": true,
+    "prefer-const": true,
+    "prefer-method-signature": true,
+    "prefer-object-spread": true,
+    "prefer-template": [true, "allow-single-concat"],
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double",
+      "avoid-template",
+      "avoid-escape"
+    ],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always",
+        "method": "never",
+        "constructor": "never"
+      }
+    ],
+    "switch-default": true,
+    "switch-final-break": true,
+    "typedef": [
+      false, // NOTE: turning this on will guarantee better type-checking
+      "call-signature",
+      "parameter",
+      "property-declaration",
+      "member-variable-declaration"
+    ],
+    "type-literal-delimiter": true,
+    "use-default-type-parameter": true,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-type-operator",
+      "check-preblock"
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "esSpecCompliant": true
+      }
+    ],
+    "interface-name": false,
+
+    /* tslint-react rules */
+    "jsx-no-multiline-js": false,
+    "jsx-no-bind": false,
+
+    /* prettier formatting violations */
+    "prettier": true
+  },
+  "linterOptions": {
+    "exclude": ["./node_modules/*"]
+  }
+}

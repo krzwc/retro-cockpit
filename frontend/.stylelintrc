@@ -1,0 +1,62 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-prettier"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "color-hex-length": "long",
+    "font-family-name-quotes": "always-unless-keyword",
+    "selector-attribute-quotes": "always",
+    "function-url-quotes": "always",
+    "string-quotes": "single",
+    "at-rule-no-vendor-prefix": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "property-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "max-nesting-depth": 6,
+    "selector-max-compound-selectors": 6,
+    "color-named": "never",
+    "declaration-no-important": true,
+    "function-url-no-scheme-relative": true,
+    "max-line-length": 120,
+    "selector-no-qualifying-type": [
+      true,
+      {
+        "ignore": [
+          "attribute",
+          "class"
+        ]
+      }
+    ],
+    "selector-max-universal": 2,
+    "declaration-property-value-blacklist": {
+      "/^(?!\\$).+/": ["/(^|.*\\s)#([a-fA-F0-9]{3}){0,2}(\\s.*|$)/", "/(^|.*\\s)(rgb|hsl)a?\\(.*\\)(\\s.*|$)/"]
+    },
+    "declaration-block-no-redundant-longhand-properties": [
+      true,
+      {
+        "ignoreShorthands": [
+          "grid-template"
+        ]
+      }
+    ],
+    "scss/at-else-empty-line-before": "never",
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "except": [
+          "blockless-after-same-name-blockless",
+          "first-nested"
+        ],
+        "ignore": ["after-comment"],
+        "ignoreAtRules": ["else"]
+      }
+    ],
+    "no-descending-specificity": null
+  }
+}
