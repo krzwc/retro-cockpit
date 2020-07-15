@@ -1,3 +1,6 @@
+/*import { applyMiddleware, combineReducers } from 'redux';*/
+import { routerMiddleware, routerReducer } from '../router/router';
+
 const delay = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
 
 const devtools =
@@ -6,6 +9,8 @@ const devtools =
 export const count = {
     redux: {
         enhancers: [devtools()],
+        middlewares: [routerMiddleware()],
+        combineReducers: routerReducer,
     },
     state: 0, // initial state
     reducers: {
