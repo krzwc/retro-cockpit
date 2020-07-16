@@ -1,43 +1,14 @@
 import React from "react";
-import { UIRouter, UIView, useSrefActive, pushStateLocationPlugin } from "@uirouter/react";
+import { UISref, UIView, pushStateLocationPlugin } from "@uirouter/react";
 import { ConnectedUIRouter } from '@uirouter/redux/lib/react';
 import { router } from '../../resources/router/router';
 import { Home } from './home';
+import Test from "components/test/test";
 
-/*
-const Hello = () => <h3>hello world</h3>;
-const About = () => <h3>Its the UI-Router hello world app!</h3>;
-*/
+const helloState = {name: "hello", url: "/hello", component: Home};
+const aboutState = {name: "test", url: "/test", component: Test};
 
-/*const Menu = () => {
-    const activeClass = "active";
-    const helloSref = useSrefActive("hello", null, activeClass);
-    const aboutSref = useSrefActive("about", null, activeClass);
-
-    return (
-        <div>
-            <a {...helloSref}>Hello</a>
-            <a {...aboutSref}>About</a>
-            <UIView/>
-        </div>
-    );
-};*/
-const states = [
-    {
-        name: 'home',
-        url: '/home',
-        component: Home,
-    },
-];
-
-/*const helloState = {name: "hello", url: "/hello", component: Hello};
-const aboutState = {name: "about", url: "/about", component: About};*/
-
-/*const RouterTest = () => (
-    <UIRouter plugins={[pushStateLocationPlugin]} states={[helloState, aboutState]}>
-        {/!*<Menu/>*!/}
-    </UIRouter>
-);*/
+const states = [helloState, aboutState];
 
 const RouterTest = () => (
     <ConnectedUIRouter
@@ -45,8 +16,26 @@ const RouterTest = () => (
         plugins={[pushStateLocationPlugin]}
         states={states}
     >
-        <UIView />
+        <div className="main">
+            <nav className="menu">
+                <ul>
+                    <UISref to="hello">
+                        <a>
+                            <li>hello</li>
+                        </a>
+                    </UISref>
+                    <UISref to="test">
+                        <a>
+                            <li>test</li>
+                        </a>
+                    </UISref>
+                </ul>
+            </nav>
+            <div className="content">
+                <UIView />
+            </div>
+        </div>
     </ConnectedUIRouter>
-)
+);
 
 export default RouterTest;

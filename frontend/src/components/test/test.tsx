@@ -1,8 +1,14 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import { connect } from "react-redux";
 import styles from './style.scss';
+import {iRootState, Dispatch} from '../../resources/store/store'
 
-const Test = ({ count, addByOne, addByOneAsync }) => {
+type connectedProps = ReturnType<typeof mapState> &
+    ReturnType<typeof mapDispatch>
+type Props = connectedProps
+
+
+const Test: FunctionComponent<Props> = ({ count, addByOne, addByOneAsync }) => {
     return (
         <div className={styles.test}>
             <h1>The count is: {count}</h1>
@@ -12,13 +18,13 @@ const Test = ({ count, addByOne, addByOneAsync }) => {
     )
 };
 
-const mapState = (state) => ({
+const mapState = (state: iRootState) => ({
     count: state.count,
 });
 
-const mapDispatch = ({ count: { addBy, addByAsync }}) => ({
-    addByOne: () => addBy(1),
-    addByOneAsync: () => addByAsync(1)
+const mapDispatch = (dispatch: Dispatch) => ({
+    addByOne: () => dispatch.count.addBy(1),
+    addByOneAsync: () => dispatch.count.addByAsync(1)
 });
 
 export default connect(mapState, mapDispatch)(Test);

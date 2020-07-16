@@ -1,27 +1,32 @@
-/*import { applyMiddleware, combineReducers } from 'redux';*/
-import { routerMiddleware, routerReducer } from '../router/router';
+import {ModelConfig, Models, RematchDispatch, ModelReducers, ModelEffects } from "@rematch/core";
 
-const delay = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
+const delay = (time: number) => new Promise(resolve => setTimeout(() => resolve(), time));
 
-const devtools =
-    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+export type CountState = number;
 
-export const count = {
-    redux: {
-        enhancers: [devtools()],
-        middlewares: [routerMiddleware()],
-        combineReducers: routerReducer,
-    },
+export interface CountModel extends ModelConfig{
+    state: number;
+    name: string;
+    reducers: ModelReducers;
+    effects: (dispatch: RematchDispatch<Models>) => ModelEffects<any>
+}
+
+export const count: CountModel = {
     state: 0, // initial state
+    name: 'count',
     reducers: {
-        addBy(state, payload) {
+        addBy: (state: CountState, payload) => {
             return state + payload
         }
     },
-    effects: (dispatch) => ({
-        async addByAsync(payload, state) {
-            await delay(1000)
+    effects: (dispatch: RematchDispatch<Models>) => ({
+        addByAsync: async (payload, state) => {
+            await delay(1000);
             dispatch.count.addBy(1)
         }
     })
 };
+
+export interface RootModel {
+    count: typeof count
+}
