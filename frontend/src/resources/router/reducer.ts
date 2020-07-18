@@ -16,9 +16,9 @@ import {
 const getActiveState = (transition: Transition): RouterActiveState => {
   const target: RouteTarget = transition.$to();
   const params = transition.params();
-  const { name, breadcrumbs, includes: includesPaths } = target;
+  const { name, includes: includesPaths } = target;
 
-  return fromJS({ name, params, includesPaths, breadcrumbs });
+  return fromJS({ name, params, includesPaths });
 };
 
 const initialState = fromJS({
@@ -27,7 +27,6 @@ const initialState = fromJS({
     name: '',
     params: {},
     includesPaths: {},
-    breadcrumbs: [],
   },
   previousState: {},
 });

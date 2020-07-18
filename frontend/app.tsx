@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { UISref, UIView } from '@uirouter/react';
 
 import store from './src/resources/store';
 
@@ -10,7 +11,27 @@ const App = () => {
     return (
         <Provider store={store}>
             {/* <RouterTest /> */}
-            <Router />
+            <Router>
+                <div className="main">
+                    <nav className="menu">
+                        <ul>
+                            <UISref to="home">
+                                <a>
+                                    <li>home</li>
+                                </a>
+                            </UISref>
+                            <UISref to="test">
+                                <a>
+                                    <li>test</li>
+                                </a>
+                            </UISref>
+                        </ul>
+                    </nav>
+                    <div className="content">
+                        <UIView name="main" />
+                    </div>
+                </div>
+            </Router>
         </Provider>
     );
 };
