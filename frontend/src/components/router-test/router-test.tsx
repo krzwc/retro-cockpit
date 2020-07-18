@@ -1,8 +1,8 @@
-import React from "react";
+/* import React from "react";
 import { UISref, UIView, pushStateLocationPlugin } from "@uirouter/react";
 import { ConnectedUIRouter } from '@uirouter/redux/lib/react';
 import { router } from '../../resources/router/router';
-import { Home } from './home';
+import { Home } from '../../views/home/home';
 import Test from "components/test/test";
 
 const helloState = {name: "hello", url: "/hello", component: Home};
@@ -39,3 +39,4 @@ const RouterTest = () => (
 );
 
 export default RouterTest;
+ */

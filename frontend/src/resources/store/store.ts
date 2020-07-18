@@ -1,7 +1,11 @@
 import { init, RematchStore, RematchRootState, RematchDispatch } from '@rematch/core'
-import * as models from './models'
-import {routerMiddleware, routerReducer} from "../router/router";
-import { RootModel} from "./models";
+import * as models from './models/count'
+// import { routerModel } from './models/routerModel'
+// import {routerMiddleware, routerReducer} from "../router/router";
+import routerMiddleware from '../router/middleware'
+import { routerReducer } from '../router/reducer'
+import { RootModel } from "./models/count";
+
 
 const store: RematchStore = init({
     models,

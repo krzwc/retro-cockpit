@@ -39,6 +39,7 @@
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.9",
+    "@types/redux-immutable": "^4.0.1",
     "@typescript-eslint/eslint-plugin": "^3.6.1",
     "@typescript-eslint/parser": "^3.6.1",
     "babel-jest": "^26.1.0",
@@ -78,8 +79,10 @@
     "@uirouter/core": "^6.0.5",
     "@uirouter/react": "^1.0.3",
     "@uirouter/redux": "^1.0.0",
+    "immutable": "^4.0.0-rc.12",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-redux": "^7.2.0"
+    "react-redux": "^7.2.0",
+    "redux-immutable": "^4.0.0"
   }
 }

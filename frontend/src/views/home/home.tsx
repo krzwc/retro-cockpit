@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { UIView, UISref, UISrefActive } from '@uirouter/react';
+import { UIView /* UISref, UISrefActive */ } from '@uirouter/react';
 
-export class Home extends React.Component<any, any> {
+class Home extends React.Component<any, any> {
     render() {
         return (
             <div>
                 UI-Router + React proof of concept
-                <UIView name="header" />
+                {/* <UIView name="header" />
                 <UISrefActive class={'active'}>
                     <UISrefActive class={'subactive'}>
                         <UISref to={'.child'}>
@@ -20,10 +20,12 @@ export class Home extends React.Component<any, any> {
                             Nest
                         </button>
                     </UISref>
-                </UISrefActive>{' '}
+                </UISrefActive>{' '} */}
                 <h2>Home</h2>
                 <UIView className="home-uiview" />
             </div>
         );
     }
 }
+
+export default Home;

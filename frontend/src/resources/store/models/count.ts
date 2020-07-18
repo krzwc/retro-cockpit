@@ -1,4 +1,4 @@
-import {ModelConfig, Models, RematchDispatch, ModelReducers, ModelEffects } from "@rematch/core";
+import { ModelConfig, Models, RematchDispatch, ModelReducers, ModelEffects } from "@rematch/core";
 
 const delay = (time: number) => new Promise(resolve => setTimeout(() => resolve(), time));
 
@@ -17,7 +17,7 @@ export const count: CountModel = {
     reducers: {
         addBy: (state: CountState, payload) => {
             return state + payload
-        }
+        },
     },
     effects: (dispatch: RematchDispatch<Models>) => ({
         addByAsync: async (payload, state) => {

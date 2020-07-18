@@ -1,2 +1,2 @@
 export { default, dispatch } from './store';
-export { count } from './models';
+export { count } from './models/count';
