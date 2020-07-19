@@ -19,13 +19,13 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "assets/*": ["src/assets/*"],
+      "common/*": ["src/common/*"],
       "components/*": ["src/components/*"],
-      "containers/*": ["src/containers/*"],
-      "hooks/*": ["src/hooks/*"],
-      "style/*": ["src/style/*"],
+      "models/*": ["src/models/*"],
+      "resources/*": ["src/resources/*"],
+      "services/*": ["src/services/*"],
       "types/*": ["src/types/*"],
-      "utils/*": ["src/utils/*"]
+      "views/*": ["src/views/*"]
     }
   },
   "exclude": ["./config/", "./node_modules/*", "./cypress/*"]

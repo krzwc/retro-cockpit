@@ -1,11 +1,12 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { UISref, UIView } from '@uirouter/react';
+import { /* UISref, */ UIView } from '@uirouter/react';
 
-import store from './src/resources/store';
+import store from 'resources/store';
 
 // import RouterTest from "components/router-test/router-test";
-import Router from './src/resources/router/router';
+import Router from 'resources/router/router';
+import Nav from 'components/nav';
 
 const App = () => {
     return (
@@ -13,7 +14,7 @@ const App = () => {
             {/* <RouterTest /> */}
             <Router>
                 <div className="main">
-                    <nav className="menu">
+                    {/* <nav className="menu">
                         <ul>
                             <UISref to="home">
                                 <a>
@@ -26,7 +27,8 @@ const App = () => {
                                 </a>
                             </UISref>
                         </ul>
-                    </nav>
+                    </nav> */}
+                    <Nav />
                     <div className="content">
                         <UIView name="main" />
                     </div>

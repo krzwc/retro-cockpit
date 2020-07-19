@@ -1,6 +1,5 @@
-import { ImmutableMap } from '../../common/interfaces';
-import { RouterState } from '../../resources/router/interfaces';
+import { RouterState } from 'resources/router/interfaces';
 
-export type StoreState = ImmutableMap<{
+export type StoreState = {
   router: RouterState;
-}>;
+};
