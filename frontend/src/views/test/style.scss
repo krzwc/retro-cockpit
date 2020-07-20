@@ -1,7 +1,2 @@
-@mixin setColor($color: red) {
-  color: $color;
-}
-
 .test {
-  @include setColor;
 }

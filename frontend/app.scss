@@ -1,0 +1,13 @@
+@import './mixins.scss';
+@import './src/styles/nes.css';
+
+body {
+    display: flex;
+    overflow-y: hidden;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #333333;
+
+    @include center();
+}

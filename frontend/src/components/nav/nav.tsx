@@ -7,6 +7,8 @@ import { activeStateNameSelector } from 'resources/router/selectors';
 import MenuButton from './components/menu-button';
 import { menuButtonConfigList } from './menu-button-config-list';
 
+import { classNames } from 'common/helpers';
+
 interface NavStateToProps {
     routeStateName: string;
 }
@@ -21,7 +23,8 @@ const Nav: FunctionComponent<NavStateToProps> = ({ routeStateName }) => {
     });
 
     return (
-        <nav>
+        <nav className={classNames('nes-container', 'is-dark', 'with-title')}>
+            <h3 className="title">Menu</h3>
             <div className="menu-buttons-container">{ViewButtons}</div>
         </nav>
     );
