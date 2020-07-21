@@ -1,0 +1,21 @@
+@import './mixins.scss';
+@import '../../assets/fonts/kongtext/kongtext.css';
+@import '../../node_modules/nes.css/css/nes.css';
+@import './nes-overrride.scss';
+
+body {
+    display: flex;
+    overflow-y: hidden;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #333333;
+    // background-color: #212529;
+
+    @include center();
+}
+
+a, p, span, div, table, tr, td, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Kongtext', monospace;
+    font-weight: 300;
+  }

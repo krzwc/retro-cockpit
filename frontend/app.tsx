@@ -5,7 +5,7 @@ import Layout from 'components/layout';
 import store from 'resources/store';
 import Router from 'resources/router/router';
 
-import 'app.scss';
+import './src/styles/app.scss';
 
 const App: FunctionComponent = () => {
     return (

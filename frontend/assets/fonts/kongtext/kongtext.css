@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Kongtext';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Lato Regular'),
+    url('./kongtext-regular.woff') format('woff'),
+    url('./kongtext-regular.woff2') format('woff2');
+}

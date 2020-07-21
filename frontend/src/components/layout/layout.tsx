@@ -3,11 +3,11 @@ import React, { FunctionComponent } from 'react';
 import Nav from 'components/nav';
 import Main from 'components/main';
 
-import styles from './style.scss';
+// import styles from './style.scss';
 
 const Layout: FunctionComponent = () => {
     return (
-        <div className={styles.layout}>
+        <div>
             <Nav />
             <Main />
         </div>

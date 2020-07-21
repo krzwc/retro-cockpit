@@ -34,13 +34,24 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                /** 
+                 * https://stackoverflow.com/questions/39805537/how-to-apply-global-styles-with-css-modules-in-a-react-app
+                */
+                // exclude all global styles for css modules
                 test: /\.s?css$/,
+                exclude: path.resolve(__dirname, './src/styles'),
                 use: ['style-loader', {
                     loader: 'css-loader',
                     options: {
                         modules: true,
                     },
                 }, 'sass-loader']
+            },
+            {
+                // process global styles without css modules
+                test: /\.s?css$/,
+                include: path.resolve(__dirname, './src/styles'),
+                use: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
                 test: /\.(png|jpg|gif)$/,
