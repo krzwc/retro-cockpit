@@ -1,0 +1,10 @@
+@import '../../styles/mixins.scss';
+
+.notifications_container {
+    grid-area: notifications;
+}
+
+.notifications {
+    @include center;
+    flex-direction: column;;
+}

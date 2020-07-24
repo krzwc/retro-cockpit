@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 
 import Nav from 'components/nav';
 import Main from 'components/main';
-import Comm from 'components/comm';
+import Notifications from 'components/notifications';
 
 import styles from './style.scss';
 
@@ -11,7 +11,7 @@ const Layout: FunctionComponent = () => {
         <div className={styles.layout}>
             <Nav />
             <Main />
-            <Comm />
+            <Notifications />
         </div>
     );
 };

@@ -27,7 +27,7 @@ const Nav: FunctionComponent<NavStateToProps> = ({ routeStateName }) => {
     return (
         <nav className={classNames('nes-container', 'is-dark', 'with-title', styles.nav)}>
             <h3 className="title">Menu</h3>
-            <div className="menu-buttons-container">{ViewButtons}</div>
+            <div className={styles.menu_buttons_container}>{ViewButtons}</div>
         </nav>
     );
 };
