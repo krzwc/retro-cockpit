@@ -7,14 +7,17 @@ export enum REQUEST_STATUSES {
 export const URLS = {
     HOME: 'home',
     TEST: 'test',
+    COMMS: 'comms',
 }
 
 export const ROUTE_NAMES = {
     HOME: 'home',
     TEST: 'test',
+    COMMS: 'comms',
 }
 
 export const ROUTE_URLS = {
     HOME: '/home',
     TEST: '/test',
+    COMMS: '/comms',
 }

@@ -4,11 +4,11 @@ import { classNames } from 'common/helpers';
 
 import styles from './style.scss';
 
-const Notifications: FunctionComponent = () => {
+const EventsAndAlarms: FunctionComponent = () => {
     return (
-        <div className={classNames('nes-container', 'is-dark', 'with-title', styles.notifications_container)}>
-            <h3 className="title">Notifications</h3>
-            <div className={styles.notifications}>
+        <div className={classNames('nes-container', 'is-dark', 'with-title', styles.alarms_container)}>
+            <h3 className="title">Alarms</h3>
+            <div className={styles.alarms}>
                 <button type="button" className={classNames('nes-btn', /* 'is-dark', */ 'is-success', 'nes-pointer')}>
                     Success
                 </button>
@@ -23,4 +23,4 @@ const Notifications: FunctionComponent = () => {
     );
 };
 
-export default Notifications;
+export default EventsAndAlarms;

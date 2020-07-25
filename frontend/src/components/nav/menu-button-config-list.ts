@@ -13,4 +13,9 @@ export const menuButtonConfigList: MenuButtonConfig[] = [
     title: 'Test',
     to: ROUTE_NAMES.TEST,
   },
+  {
+    iconType: 'comms',
+    title: 'Comms',
+    to: ROUTE_NAMES.COMMS,
+  },
 ];
