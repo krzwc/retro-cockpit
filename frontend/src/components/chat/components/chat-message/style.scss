@@ -1,0 +1,12 @@
+.message {
+    display: flex;
+    margin-top: 2rem;
+}
+
+.right {
+    justify-content: flex-end;
+}
+
+.left {
+    justify-content: flex-start;
+}

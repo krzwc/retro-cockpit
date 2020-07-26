@@ -60,8 +60,8 @@ class Router extends PureComponent<RouterProps> {
 
     private configureRouter = (routerInstance: UIRouterReact) => {
         // Global config for router
-        routerInstance.urlService.rules.initial({ state: 'home' });
-        routerInstance.urlService.rules.otherwise({ state: 'home' });
+        routerInstance.urlService.rules.initial({ state: 'comms' });
+        routerInstance.urlService.rules.otherwise({ state: 'comms' });
     };
 }
 
