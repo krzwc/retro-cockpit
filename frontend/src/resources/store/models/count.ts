@@ -26,7 +26,3 @@ export const count: CountModel = {
         }
     })
 };
-
-export interface RootModel {
-    count: typeof count
-}
