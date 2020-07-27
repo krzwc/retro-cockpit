@@ -10,3 +10,8 @@
 .left {
     justify-content: flex-start;
 }
+
+.avatar {
+    image-rendering: pixelated;
+    align-self: flex-end;
+}
