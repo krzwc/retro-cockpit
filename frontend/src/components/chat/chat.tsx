@@ -12,7 +12,11 @@ import styles from './style.scss';
 
 import { iRootState, Dispatch } from '../../resources/store/store';
 
+import WebSocketService from 'common/services/WebSocketService';
+
 const URL = 'ws://localhost:3030';
+
+WebSocketService.init();
 
 export interface Message {
     name: string;
@@ -30,7 +34,7 @@ class Chat extends PureComponent<ChatProps> {
     private messageListRef = React.createRef<HTMLDivElement>();
 
     public componentDidMount() {
-        this.ws.onopen = () => {
+        /* this.ws.onopen = () => {
             // on connecting, do nothing but log it to the console
             console.log('connected');
         };
@@ -44,10 +48,11 @@ class Chat extends PureComponent<ChatProps> {
         this.ws.onclose = () => {
             console.log('disconnected');
             // automatically try to reconnect on connection loss
-            /* this.setState({
-                ws: new WebSocket(URL),
-            }); */
-        };
+            //this.setState({
+            //    ws: new WebSocket(URL),
+            //});
+        }; */
+        WebSocketService.onMessage(this.props.addMessage);
     }
 
     public componentDidUpdate() {
