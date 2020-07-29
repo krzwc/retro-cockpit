@@ -37,12 +37,12 @@ const mapDispatch = (dispatch: Dispatch) => {
 
     return {
         addByOne: () => {
-            console.log(dispatch.count.addBy);
+            /* console.log(dispatch.count.addBy); */
             return dispatch.count.addBy(1);
         },
         addByOneAsync: () => dispatch.count.addByAsync(1),
         triggerTransitionHome: () => {
-            console.log(() => triggerTransitionAction('home', {}));
+            /* console.log(() => triggerTransitionAction('home', {})); */
             return triggerTransitionAction('home', {});
         },
         // triggerTransitionHome: () => dispatch.count.triggerTransitionAction('home', {}),

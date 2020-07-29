@@ -14,8 +14,6 @@ import { iRootState, Dispatch } from '../../resources/store/store';
 
 import WebSocketService from 'common/services/WebSocketService';
 
-const URL = 'ws://localhost:3030';
-
 WebSocketService.init();
 
 export interface Message {
@@ -30,28 +28,10 @@ interface ChatProps {
 }
 
 class Chat extends PureComponent<ChatProps> {
-    private ws = new WebSocket(URL);
     private messageListRef = React.createRef<HTMLDivElement>();
 
     public componentDidMount() {
-        /* this.ws.onopen = () => {
-            // on connecting, do nothing but log it to the console
-            console.log('connected');
-        };
-
-        this.ws.onmessage = (e: MessageEvent) => {
-            // on receiving a message, add it to the list of messages
-            const message = JSON.parse(e.data);
-            this.props.addMessage(message);
-        };
-
-        this.ws.onclose = () => {
-            console.log('disconnected');
-            // automatically try to reconnect on connection loss
-            //this.setState({
-            //    ws: new WebSocket(URL),
-            //});
-        }; */
+        WebSocketService.open();
         WebSocketService.onMessage(this.props.addMessage);
     }
 
@@ -60,13 +40,6 @@ class Chat extends PureComponent<ChatProps> {
             this.messageListRef.current.scrollTop = this.messageListRef.current.scrollHeight;
         }
     }
-
-    private submitMessage = (messageString: string) => {
-        // on submitting the ChatInput form, send the message, add it to the list and reset the input
-        const message = { name: this.props.name, text: messageString };
-        this.ws.send(JSON.stringify(message));
-        this.props.addMessage(message);
-    };
 
     public render() {
         return (
@@ -82,13 +55,17 @@ class Chat extends PureComponent<ChatProps> {
                     />
                 </label>
                  */}
-                {console.log(this.messageListRef)}
                 <div className={classNames('message-list', styles.message_container)} ref={this.messageListRef}>
                     {this.props.chat.map((message, index) => (
                         <ChatMessage key={index} {...message} />
                     ))}
                 </div>
-                <ChatInput onSubmitMessage={(messageString) => this.submitMessage(messageString)} />
+                {/* <ChatInput onSubmitMessage={(messageString) => this.submitMessage(messageString)} /> */}
+                <ChatInput
+                    onSubmitMessage={(messageString) =>
+                        WebSocketService.sendMessage(messageString, this.props.name, this.props.addMessage)
+                    }
+                />
             </section>
         );
     }
