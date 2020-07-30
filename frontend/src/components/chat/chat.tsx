@@ -12,7 +12,7 @@ import styles from './style.scss';
 
 import { iRootState, Dispatch } from '../../resources/store/store';
 
-import WebSocketService from 'common/services/WebSocketService';
+import WebSocketService from 'common/services/websocket-service';
 
 WebSocketService.init();
 
