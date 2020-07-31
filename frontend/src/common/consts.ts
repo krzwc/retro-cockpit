@@ -8,16 +8,19 @@ export const URLS = {
     HOME: 'home',
     TEST: 'test',
     COMMS: 'comms',
+    METRICS: 'metrics',
 }
 
 export const ROUTE_NAMES = {
     HOME: 'home',
     TEST: 'test',
     COMMS: 'comms',
+    METRICS: 'metrics',
 }
 
 export const ROUTE_URLS = {
     HOME: '/home',
     TEST: '/test',
     COMMS: '/comms',
+    METRICS: '/metrics',
 }

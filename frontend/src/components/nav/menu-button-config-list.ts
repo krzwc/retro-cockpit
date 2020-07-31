@@ -18,4 +18,9 @@ export const menuButtonConfigList: MenuButtonConfig[] = [
     title: 'Comms',
     to: ROUTE_NAMES.COMMS,
   },
+  {
+    iconType: 'metrics',
+    title: 'Metrics',
+    to: ROUTE_NAMES.METRICS,
+  },
 ];
