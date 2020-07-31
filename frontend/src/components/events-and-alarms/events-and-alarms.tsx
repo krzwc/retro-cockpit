@@ -2,14 +2,12 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isEqual } from 'lodash-es';
+import { triggerTransition } from '@uirouter/redux/lib/core/actions';
 
-import { iRootState, Dispatch } from '../../resources/store/store';
-
+import { iRootState, Dispatch } from 'resources/store/store';
 import { classNames } from 'common/helpers';
 
 import styles from './style.scss';
-
-import { triggerTransition } from '@uirouter/redux/lib/core/actions';
 
 type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
 type EventsAndAlarmsProps = connectedProps;
@@ -43,7 +41,7 @@ const EventsAndAlarms: FunctionComponent<EventsAndAlarmsProps> = ({ triggerTrans
                         onClick={clickHandler}
                         className={classNames('nes-btn', 'is-warning', 'nes-pointer')}
                     >
-                        Incomming message
+                        Incoming message
                     </button>
                 )}
                 {/*  <button type="button" className={classNames('nes-btn', 'is-error', 'nes-pointer')}>

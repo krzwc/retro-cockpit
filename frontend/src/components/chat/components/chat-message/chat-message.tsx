@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import { Message } from '../../chat';
-import { DEFAULT_USER } from 'resources/store/models/chat';
 
+import { DEFAULT_USER } from 'resources/store/models/chat';
 import { classNames } from 'common/helpers';
 
+import { Message } from '../../chat';
 import styles from './style.scss';
 
 const leftOrRight = (name: string) => (name === DEFAULT_USER ? styles.right : styles.left);

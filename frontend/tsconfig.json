@@ -27,6 +27,7 @@
       "types/*": ["src/types/*"],
       "views/*": ["src/views/*"],
       "styles/*": ["src/styles/*"],
+      "assets/*": ["assets/*"],
     }
   },
   "exclude": ["./config/", "./node_modules/*", "./cypress/*"]

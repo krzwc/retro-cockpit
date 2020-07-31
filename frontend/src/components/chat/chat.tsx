@@ -41,6 +41,10 @@ class Chat extends PureComponent<ChatProps> {
         }
     }
 
+    private messageEncoder = (messageString: string, name: string) => {
+        return { name: name, text: messageString };
+    };
+
     public render() {
         return (
             <section className={styles.comms}>
@@ -63,7 +67,10 @@ class Chat extends PureComponent<ChatProps> {
                 {/* <ChatInput onSubmitMessage={(messageString) => this.submitMessage(messageString)} /> */}
                 <ChatInput
                     onSubmitMessage={(messageString) =>
-                        WebSocketService.sendMessage(messageString, this.props.name, this.props.addMessage)
+                        WebSocketService.sendMessage(
+                            this.messageEncoder(messageString, this.props.name),
+                            this.props.addMessage,
+                        )
                     }
                 />
             </section>

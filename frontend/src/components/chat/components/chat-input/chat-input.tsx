@@ -31,7 +31,6 @@ const ChatInput: FunctionComponent<ChatInput> = ({ onSubmitMessage }) => {
                         setMessageString((e.target as HTMLInputElement).value)
                     }
                 />
-                {/* <input type="submit" value={'Send'} /> */}
             </form>
         </div>
     );

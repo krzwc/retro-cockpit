@@ -2,10 +2,6 @@
 // https://stackoverflow.com/questions/46994344/architecture-in-a-react-native-app-using-websockets
 
 import { Action } from 'redux';
-export interface Message {
-    name: string;
-    text: string;
-}
 
 const WS_ENDPOINT = 'ws://localhost:3030'
 
@@ -29,17 +25,15 @@ export default class WebSocketService {
         })        
     }
 
-    static onMessage(handler: (message: Message) => Action) {
+    static onMessage(handler: (message: object) => Action) {
         // on receiving a message, use the passed handler
       this.ws.addEventListener('message', (e: MessageEvent) => {
-          console.log('here')
         const message = JSON.parse(e.data);
         handler(message)
       });
     }
 
-    static sendMessage(messageString: string, name: string, handler: (message: Message) => Action) {
-        const message = { name: name, text: messageString };
+    static sendMessage(message: object, handler: (message: object) => Action) {
         this.ws.send(JSON.stringify(message));
         handler(message);
     }
