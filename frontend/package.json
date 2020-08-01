@@ -81,9 +81,11 @@
     "@uirouter/redux": "^1.0.0",
     "immutable": "^4.0.0-rc.12",
     "nes.css": "^2.3.0",
+    "pondjs": "^0.9.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
+    "react-timeseries-charts": "^0.16.1",
     "redux-immutable": "^4.0.0",
     "reselect": "^4.0.0"
   }

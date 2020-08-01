@@ -1,5 +1,6 @@
 // https://karlboghossian.com/2020/05/24/introduction-to-websockets/
 // https://stackoverflow.com/questions/46994344/architecture-in-a-react-native-app-using-websockets
+// https://gist.github.com/woraperth/3ecb45fe3b6502cabae043ba9fd3a3e5
 
 import { Action } from 'redux';
 
