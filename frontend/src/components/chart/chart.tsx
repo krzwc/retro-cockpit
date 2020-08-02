@@ -1,86 +1,55 @@
-import React from 'react';
-import { TimeSeries, Index } from 'pondjs';
-import { Resizable, Charts, ChartContainer, ChartRow, YAxis, LineChart, styler } from 'react-timeseries-charts';
-import data from './data';
+import React, { Component } from 'react';
 
-class SimpleChart extends React.Component {
-    render() {
-        const series = new TimeSeries({
-            name: 'hilo_rainfall',
-            columns: ['index', 'precip'],
-            points: data.values.map(([d, value]) => [Index.getIndexString('1h', new Date(d)), value]),
-        });
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-        const style = styler([
-            {
-                key: 'precip',
-                color: '#A5C8E1',
-                selected: '#2CB1CF',
-            },
-        ]);
+class MovingChart extends Component {
+    randomDataArray(nb_elem) {
+        var data_bar = [];
+        for (var i = 0; i < nb_elem; i++) {
+            data_bar.push({
+                name: 'core ' + i,
+                freq: Math.round(Math.random() * 1000),
+                freq2: Math.round(Math.random() * 1000),
+            });
+        }
+        return data_bar;
+    }
 
-        /* const axisStyle = {
-            label: { stroke: 'none', fill: '#8B7E7E', fontWeight: 300, fontSize: 12, font: '"Kongtext", monospace"' },
-            values: { stroke: 'none', fill: '#8B7E7E', fontWeight: 100, fontSize: 11, font: '"Kongtext", monospace"' },
-            ticks: { fill: 'none', stroke: '#C0C0C0' },
-            axis: { fill: 'none', stroke: '#C0C0C0' },
-        }; */
-        const darkAxis = {
-            label: {
-                stroke: 'none',
-                fill: '#AAA', // Default label color
-                fontWeight: 300,
-                fontSize: 14,
-                font: '"Kongtext", monospace"',
-            },
-            values: {
-                stroke: 'none',
-                fill: '#888',
-                fontWeight: 300,
-                fontSize: 11,
-                font: '"Kongtext", monospace"',
-            },
-            ticks: {
-                fill: 'none',
-                stroke: '#AAA',
-                opacity: 0.2,
-            },
-            axis: {
-                fill: 'none',
-                stroke: '#AAA',
-                opacity: 1,
-            },
+    constructor(props) {
+        super(props);
+        this.state = {
+            nb_bar: props.nb_bar,
+            data: this.randomDataArray(props.nb_bar),
         };
+    }
 
+    componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 500);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    tick() {
+        this.setState({
+            data: this.randomDataArray(this.props.nb_bar),
+        });
+    }
+
+    render() {
         return (
-            <Resizable>
-                <ChartContainer timeRange={series.range()} timeAxisStyle={darkAxis}>
-                    <ChartRow height="150">
-                        <YAxis
-                            id="rain"
-                            label="Rainfall (inches/hr)"
-                            min={0}
-                            max={2}
-                            format=".2f"
-                            width="70"
-                            type="linear"
-                            style={darkAxis}
-                        />
-                        <Charts>
-                            <LineChart
-                                axis="rain"
-                                style={style}
-                                spacing={1}
-                                columns={['precip']}
-                                series={series}
-                                minBarHeight={1}
-                            />
-                        </Charts>
-                    </ChartRow>
-                </ChartContainer>
-            </Resizable>
+            <BarChart width={450} height={340} data={this.state.data}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="5 5" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="freq" fill="#8884d8" />
+                <Bar dataKey="freq2" fill="#8214d8" />
+            </BarChart>
         );
     }
 }
 
-export default SimpleChart;
+export default MovingChart;
