@@ -10,7 +10,7 @@ import ChatMessage from './components/chat-message';
 import { classNames } from 'common/helpers';
 import styles from './style.scss';
 
-import { iRootState, Dispatch } from '../../resources/store/store';
+import { iRootState, Dispatch } from 'resources/store/store';
 
 import WebSocketService from 'common/services/websocket-service';
 

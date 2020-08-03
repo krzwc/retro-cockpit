@@ -1,45 +1,30 @@
 import React, { Component } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { connect } from 'react-redux';
+import { Action } from 'redux';
 
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { iRootState, Dispatch } from 'resources/store/store';
+import { BarChartData } from 'resources/store/models/metrics';
 
-class MovingChart extends Component {
-    randomDataArray(nb_elem) {
-        var data_bar = [];
-        for (var i = 0; i < nb_elem; i++) {
-            data_bar.push({
-                name: 'core ' + i,
-                freq: Math.round(Math.random() * 1000),
-                freq2: Math.round(Math.random() * 1000),
-            });
-        }
-        return data_bar;
-    }
+interface MovingChartProps {
+    data: BarChartData[];
+    updateData(): Action;
+}
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            nb_bar: props.nb_bar,
-            data: this.randomDataArray(props.nb_bar),
-        };
-    }
+class MovingChart extends Component<MovingChartProps> {
+    private timerID: NodeJS.Timeout;
 
     componentDidMount() {
-        this.timerID = setInterval(() => this.tick(), 500);
+        this.timerID = setInterval(() => this.props.updateData(), 500);
     }
 
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
 
-    tick() {
-        this.setState({
-            data: this.randomDataArray(this.props.nb_bar),
-        });
-    }
-
     render() {
         return (
-            <BarChart width={450} height={340} data={this.state.data}>
+            <BarChart width={450} height={340} data={this.props.data}>
                 <XAxis dataKey="name" />
                 <YAxis />
                 <CartesianGrid strokeDasharray="5 5" />
@@ -52,4 +37,16 @@ class MovingChart extends Component {
     }
 }
 
-export default MovingChart;
+const mapState = (state: iRootState) => ({
+    data: state.metrics.barchart.data,
+});
+
+const mapDispatch = (dispatch: Dispatch) => {
+    return {
+        updateData: () => {
+            return dispatch.metrics.updateData();
+        },
+    };
+};
+
+export default connect(mapState, mapDispatch)(MovingChart);
