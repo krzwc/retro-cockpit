@@ -17,7 +17,9 @@ export type BarChartData = {
 }
 
 const INITIAL_STATE = {
-    progressbar: 30,
+    progressbars: { 
+        pb1: 30 
+    },
     barchart: {
         barsNo: 10,
         data: [] as BarChartData[],

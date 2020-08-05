@@ -3,3 +3,21 @@
     transform: rotate(90deg); 
     width: 25%;
 }
+
+.grid {
+    display: grid;
+    padding: 4px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas:
+      "progressbars barcharts"
+      "linecharts other"
+}
+
+.barcharts {
+    grid-area: barcharts;
+}
+
+.progressbars {
+    grid-area: progressbars;
+}
