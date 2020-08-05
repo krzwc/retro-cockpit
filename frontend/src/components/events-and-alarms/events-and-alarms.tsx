@@ -6,6 +6,7 @@ import { triggerTransition } from '@uirouter/redux/lib/core/actions';
 
 import { iRootState, Dispatch } from 'resources/store/store';
 import { classNames } from 'common/helpers';
+import Toggle from 'components/toggle';
 
 import styles from './style.scss';
 
@@ -44,6 +45,7 @@ const EventsAndAlarms: FunctionComponent<EventsAndAlarmsProps> = ({ triggerTrans
                         Incoming message
                     </button>
                 )}
+                <Toggle />
                 {/*  <button type="button" className={classNames('nes-btn', 'is-error', 'nes-pointer')}>
                     Error
                 </button> */}
