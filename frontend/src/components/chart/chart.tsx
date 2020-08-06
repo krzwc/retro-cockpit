@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 
@@ -12,10 +12,10 @@ interface MovingChartProps {
 }
 
 class MovingChart extends Component<MovingChartProps> {
-    private timerID: NodeJS.Timeout;
+    private timerID: number;
 
     componentDidMount() {
-        this.timerID = setInterval(() => this.props.updateData(), 500);
+        this.timerID = window.setInterval(() => this.props.updateData(), 500);
     }
 
     componentWillUnmount() {
@@ -24,15 +24,17 @@ class MovingChart extends Component<MovingChartProps> {
 
     render() {
         return (
-            <BarChart width={450} height={340} data={this.props.data}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="5 5" />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="freq" fill="#8884d8" />
-                <Bar dataKey="freq2" fill="#8214d8" />
-            </BarChart>
+            <ResponsiveContainer width="100%" height="100%">
+                <BarChart width={450} height={340} data={this.props.data}>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <CartesianGrid strokeDasharray="5 5" />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="freq" fill="#8884d8" />
+                    <Bar dataKey="freq2" fill="#8214d8" />
+                </BarChart>
+            </ResponsiveContainer>
         );
     }
 }
