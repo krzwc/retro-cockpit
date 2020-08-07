@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 import MovingChart from 'components/chart';
-import ProgressBar from 'components/progressbar';
+import ProgressBars from 'components/progressbars';
 
 import styles from './style.scss';
 
@@ -9,7 +9,7 @@ const Metrics: FunctionComponent = () => {
     return (
         <div className={styles.grid}>
             <div className={styles.progressbars}>
-                <ProgressBar />
+                <ProgressBars />
             </div>
             <div className={styles.barcharts}>
                 <MovingChart />

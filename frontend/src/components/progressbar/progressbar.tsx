@@ -1,23 +1,21 @@
 import React, { FunctionComponent } from 'react';
-import { connect } from 'react-redux';
 
-import { iRootState, Dispatch } from 'resources/store/store';
 import { classNames } from 'common/helpers';
 
+import styles from './style.scss';
+
 interface ProgressBarProps {
-    data: number;
+    range: number;
 }
 
-const ProgressBar: FunctionComponent<ProgressBarProps> = ({ data }) => {
-    return <progress className={classNames('nes-progress', 'is-error')} value={data} max="100"></progress>;
+const ProgressBar: FunctionComponent<ProgressBarProps> = ({ range }) => {
+    return (
+        <progress
+            className={classNames('nes-progress', 'is-error', styles.progress)}
+            value={range}
+            max="100"
+        ></progress>
+    );
 };
 
-const mapState = (state: iRootState) => ({
-    data: state.metrics.progressbars.pb1,
-});
-
-const mapDispatch = (dispatch: Dispatch) => {
-    return {};
-};
-
-export default connect(mapState, mapDispatch)(ProgressBar);
+export default ProgressBar;

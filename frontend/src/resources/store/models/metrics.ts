@@ -16,9 +16,14 @@ export type BarChartData = {
     freq2: number,
 }
 
+export type PBData = {
+    [key: string]: number;
+}
+
 const INITIAL_STATE = {
     progressbars: { 
-        pb1: 30 
+        pbNo: 5,
+        data: {} as PBData,
     },
     barchart: {
         barsNo: 10,
@@ -36,12 +41,21 @@ const randomDataArray = (nb_elem: number) => {
     }));
 };
 
+const randomProgressBarsValues = (pb_amount: number) => {
+    return range(pb_amount).reduce((acc, _,index) => {
+        return { ...acc, [`pb${index}`]: Math.round(Math.random() * 100) }
+    }, {})
+}
+
 export const metrics: MetricsModel = {
     state: INITIAL_STATE,
     name: 'metrics',
     reducers: {
         updateData: (state: MetricsState) => {
             return { ...state, barchart: { ...state.barchart, data: randomDataArray(state.barchart.barsNo) } }
+        },
+        updatePBData: (state: MetricsState) => {
+            return { ...state, progressbars:  { ...state.progressbars, data: randomProgressBarsValues(state.progressbars.pbNo) } }
         },
     },
 };
