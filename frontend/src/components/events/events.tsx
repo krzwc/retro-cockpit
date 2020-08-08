@@ -11,9 +11,9 @@ import Toggle from 'components/toggle';
 import styles from './style.scss';
 
 type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
-type EventsAndAlarmsProps = connectedProps;
+type EventsProps = connectedProps;
 
-const EventsAndAlarms: FunctionComponent<EventsAndAlarmsProps> = ({ triggerTransitionComms, chat }) => {
+const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat }) => {
     const [messages, setMessages] = useState(chat);
     const [areNewMessages, setAreNewMessages] = useState(false);
 
@@ -67,4 +67,4 @@ const mapDispatch = (dispatch: Dispatch) => {
     };
 };
 
-export default connect(mapState, mapDispatch)(EventsAndAlarms);
+export default connect(mapState, mapDispatch)(Events);

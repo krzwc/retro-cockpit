@@ -1,5 +1,5 @@
 import { init, RematchStore, RematchRootState, RematchDispatch } from '@rematch/core'
-import { count, chat, metrics, RootModel } from './models'
+import { count, chat, metrics, alarms, RootModel } from './models'
 // import { routerModel } from './models/routerModel'
 // import {routerMiddleware, routerReducer} from "../router/router";
 import routerMiddleware from '../router/middleware'
@@ -7,7 +7,7 @@ import { routerReducer } from '../router/reducer'
 
 
 const store: RematchStore = init({
-    models: { count, chat, metrics },
+    models: { count, chat, metrics, alarms },
     redux: {
         middlewares: [routerMiddleware],
         reducers: {

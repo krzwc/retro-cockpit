@@ -9,6 +9,7 @@ export const URLS = {
     TEST: 'test',
     COMMS: 'comms',
     METRICS: 'metrics',
+    ALARMS: 'alarms',
 }
 
 export const ROUTE_NAMES = {
@@ -16,6 +17,7 @@ export const ROUTE_NAMES = {
     TEST: 'test',
     COMMS: 'comms',
     METRICS: 'metrics',
+    ALARMS: 'alarms',
 }
 
 export const ROUTE_URLS = {
@@ -23,4 +25,5 @@ export const ROUTE_URLS = {
     TEST: '/test',
     COMMS: '/comms',
     METRICS: '/metrics',
+    ALARMS: '/alarms',
 }
