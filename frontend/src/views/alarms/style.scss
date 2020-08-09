@@ -1,0 +1,11 @@
+@import '../../styles/mixins.scss';
+
+.table {
+    @include center('horizontally');
+
+    flex-direction: column;
+}
+
+.toggle {
+    @include center();
+}

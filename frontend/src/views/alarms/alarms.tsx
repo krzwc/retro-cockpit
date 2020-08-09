@@ -7,6 +7,9 @@ import { iRootState, Dispatch } from 'resources/store/store';
 import { Alarm } from 'resources/store/models/alarms';
 import useInterval from 'common/hooks';
 import Toggle from 'components/toggle';
+import { classNames } from 'common/helpers';
+
+import styles from './style.scss';
 
 interface AlarmsProps {
     data: Alarm[];
@@ -16,13 +19,12 @@ interface AlarmsProps {
 
 const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, resolveAlarm }) => {
     useInterval(() => {
-        console.log('working');
         updateData();
     }, 5000);
 
     return (
-        <div className="nes-table-responsive">
-            <table className="nes-table is-bordered is-dark">
+        <div className={classNames('nes-table-responsive', styles.table)}>
+            <table className={classNames('nes-table', 'is-bordered', 'is-dark')}>
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -36,7 +38,7 @@ const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, resolveAlarm
                             <tr key={alarm.date}>
                                 <td>{alarm.date}</td>
                                 <td>{alarm.info}</td>
-                                <td>
+                                <td className={styles.toggle}>
                                     <Toggle checked={alarm.active} onClick={() => resolveAlarm(alarm.date)} />
                                 </td>
                             </tr>

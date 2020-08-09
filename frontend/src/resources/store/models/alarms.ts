@@ -31,10 +31,11 @@ export const alarms: AlarmsModel = {
     name: 'alarms',
     reducers: {
         updateData: (state: AlarmsState) => {
-            return [ ...state, generateAlarm() ]
+            return [ generateAlarm(), ...state ]
         },
         resolveAlarm: (state: AlarmsState, payload) => {
-            return [ ...state, state.find((item) => item.date === payload).active = false ]
+
+            return state.map((item) => item.date === payload ? { ...item, active: false } : item )
         }
     },
 };
