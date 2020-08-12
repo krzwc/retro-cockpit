@@ -15,7 +15,7 @@ class MovingChart extends Component<MovingChartProps> {
     private timerID: number;
 
     componentDidMount() {
-        this.timerID = window.setInterval(() => this.props.updateData(), 1000);
+        this.timerID = window.setInterval(() => this.props.updateData(), 10000);
     }
 
     componentWillUnmount() {

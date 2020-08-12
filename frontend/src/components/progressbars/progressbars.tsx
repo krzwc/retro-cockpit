@@ -13,15 +13,15 @@ interface ProgressBarsProps {
 }
 
 const ProgressBars: FunctionComponent<ProgressBarsProps> = ({ data, updatePBData }) => {
-    useInterval(() => updatePBData(), 1000);
+    useInterval(() => updatePBData(), 5000);
 
     return (
-        <div>
+        <>
             {Object.values(data).map((singlePB, index) => (
-                <ProgressBar range={singlePB} key={index} />
+                <ProgressBar range={singlePB} key={index} label={`KPI${index}`} id={`KPI${index}`} />
             ))}
             {console.log(data)}
-        </div>
+        </>
     );
 };
 

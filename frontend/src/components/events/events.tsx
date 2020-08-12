@@ -31,7 +31,7 @@ const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat }
 
     return (
         <div className={classNames('nes-container', 'is-dark', 'with-title', styles.alarms_container)}>
-            <h3 className="title">Alarms</h3>
+            <h3 className="title">Events</h3>
             <div className={styles.alarms}>
                 {/* <button type="button" className={classNames('nes-btn', 'is-success', 'nes-pointer')}>
                     Success
