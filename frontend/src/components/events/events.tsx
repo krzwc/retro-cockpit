@@ -1,19 +1,22 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { isEqual } from 'lodash-es';
+import { isEqual, isEmpty } from 'lodash-es';
 import { triggerTransition } from '@uirouter/redux/lib/core/actions';
 
 import { iRootState, Dispatch } from 'resources/store/store';
 import { classNames } from 'common/helpers';
 import Toggle from 'components/toggle';
+import { Alarm } from 'resources/store/models/alarms';
 
 import styles from './style.scss';
 
 type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
 type EventsProps = connectedProps;
 
-const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat }) => {
+const checkedBasedOnAllAlarms = (alarms: Alarm[]) => alarms.some((alarm) => alarm.active === true);
+
+const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat, alarms, resolveAlarms }) => {
     const [messages, setMessages] = useState(chat);
     const [areNewMessages, setAreNewMessages] = useState(false);
 
@@ -30,12 +33,9 @@ const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat }
     };
 
     return (
-        <div className={classNames('nes-container', 'is-dark', 'with-title', styles.alarms_container)}>
+        <div className={classNames('nes-container', 'is-dark', 'with-title', styles.events_container)}>
             <h3 className="title">Events</h3>
-            <div className={styles.alarms}>
-                {/* <button type="button" className={classNames('nes-btn', 'is-success', 'nes-pointer')}>
-                    Success
-                </button> */}
+            <div className={styles.events}>
                 {areNewMessages && (
                     <button
                         type="button"
@@ -45,10 +45,16 @@ const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat }
                         Incoming message
                     </button>
                 )}
-                <Toggle />
-                {/*  <button type="button" className={classNames('nes-btn', 'is-error', 'nes-pointer')}>
-                    Error
-                </button> */}
+                {!isEmpty(alarms) && (
+                    <>
+                        <span>Resolve alarms:</span>
+                        <Toggle
+                            checked={checkedBasedOnAllAlarms(alarms)}
+                            onClick={() => resolveAlarms()}
+                            className={styles.alarms}
+                        />
+                    </>
+                )}
             </div>
         </div>
     );
@@ -56,6 +62,7 @@ const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat }
 
 const mapState = (state: iRootState) => ({
     chat: state.chat.chat,
+    alarms: state.alarms,
 });
 
 const mapDispatch = (dispatch: Dispatch) => {
@@ -63,6 +70,9 @@ const mapDispatch = (dispatch: Dispatch) => {
     return {
         triggerTransitionComms: () => {
             return triggerTransitionAction('comms', {});
+        },
+        resolveAlarms: () => {
+            return dispatch.alarms.resolveAlarms();
         },
     };
 };

@@ -1,10 +1,15 @@
 @import '../../styles/mixins.scss';
 
-.alarms_container {
-    grid-area: alarms;
+.events_container {
+    grid-area: events;
+}
+
+.events {
+    @include center;
+    flex-direction: column;
 }
 
 .alarms {
-    @include center;
-    flex-direction: column;;
+    display: block;
+    margin: 0 auto;
 }

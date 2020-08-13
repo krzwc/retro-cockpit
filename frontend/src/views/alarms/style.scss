@@ -2,10 +2,8 @@
 
 .table {
     @include center('horizontally');
-
-    flex-direction: column;
 }
 
 .toggle {
-    @include center();
+    text-align: center;
 }

@@ -1,5 +1,6 @@
+@import '../../styles/mixins.scss';
+
 .main {
     grid-area: main;
-    display: flex;
-    flex-direction: column;
+    @include flexContainer;
 }

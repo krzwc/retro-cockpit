@@ -20,16 +20,6 @@ export type PBData = {
     [key: string]: number;
 }
 
-const INITIAL_STATE = {
-    progressbars: { 
-        pbNo: 5,
-        data: {} as PBData,
-    },
-    barchart: {
-        barsNo: 10,
-        data: [] as BarChartData[],
-    }
-};
 
 type MetricsState = typeof INITIAL_STATE;
 
@@ -46,6 +36,17 @@ const randomProgressBarsValues = (pb_amount: number) => {
         return { ...acc, [`pb${index}`]: Math.round(Math.random() * 100) }
     }, {})
 }
+
+const INITIAL_STATE = {
+    progressbars: { 
+        pbNo: 5,
+        data: randomProgressBarsValues(5) as PBData,
+    },
+    barchart: {
+        barsNo: 10,
+        data: randomDataArray(10) as BarChartData[],
+    }
+};
 
 export const metrics: MetricsModel = {
     state: INITIAL_STATE,

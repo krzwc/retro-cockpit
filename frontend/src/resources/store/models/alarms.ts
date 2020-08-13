@@ -36,6 +36,9 @@ export const alarms: AlarmsModel = {
         resolveAlarm: (state: AlarmsState, payload) => {
 
             return state.map((item) => item.date === payload ? { ...item, active: false } : item )
+        },
+        resolveAlarms: (state: AlarmsState) => {
+            return state.map((alarm) => ({ ...alarm, active: false }));
         }
     },
 };

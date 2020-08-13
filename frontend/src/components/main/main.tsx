@@ -7,9 +7,9 @@ import styles from './style.scss';
 
 const Main: FunctionComponent = () => {
     return (
-        <div className={classNames('nes-container', 'is-dark', styles.main)}>
+        <main className={classNames('nes-container', 'is-dark', styles.main)}>
             <UIView name="main" />
-        </div>
+        </main>
     );
 };
 

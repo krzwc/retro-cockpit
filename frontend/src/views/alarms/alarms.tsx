@@ -20,7 +20,7 @@ interface AlarmsProps {
 const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, resolveAlarm }) => {
     useInterval(() => {
         updateData();
-    }, 5000);
+    }, 60000);
 
     return (
         <div className={classNames('nes-table-responsive', styles.table)}>
