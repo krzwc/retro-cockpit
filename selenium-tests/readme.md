@@ -14,10 +14,15 @@
 1. [python3](https://www.python.org/downloads/) `brew install python3`
 
 ## Install
-1. install requirements: `pip install -r requirements --user`
+`python3 -m venv selenium_venv`
+`source selenium_venv/bin/activate`
+`pip install -r requirements.txt`
 1. if you want to run on firefox, [download geckodriver](https://github.com/mozilla/geckodriver/releases) and move to a folder on your path (eg. `/usr/local/bin`)
 
 ## Run Tests
 1. in Chrome (default): `python3 -m pytest`
 1. in Firefox `pytest --driver firefox`
 1. in parallel `pytest --workers 2`
+
+## Deactivate venv
+`deactivate`

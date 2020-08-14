@@ -5,8 +5,18 @@ from selenium.webdriver.common.keys import Keys
 @pytest.fixture(scope="module")
 def open_url(browser,url):
     browser.get(url)
-    browser.find_element(By.TAG_NAME, "form")
     assert browser.title == "React Example"
+
+def test_menu_items(browser, open_url):
+    menuItemsCount = len(browser.find_elements(By.XPATH, '//*[@class="view-button-title"]'))
+    assert menuItemsCount == 3
+
+def test_menu_links(browser, open_url):
+    browser.find_element(By.XPATH, '//a[@href="/metrics"]').click()
+    progressCount = len(browser.find_elements(By.XPATH, '//progress'))
+    assert progressCount == 5
+
+
 
 # def test_add_todo(browser, open_url):
 #     todoText = "Add to do item 1 by PYTEST"
