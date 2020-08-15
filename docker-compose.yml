@@ -1,0 +1,15 @@
+---
+version: '3'
+
+services:
+    selenium-tests:
+        build:
+          context: .
+          dockerfile: docker/selenium-tests/Dockerfile
+        # ports:
+        #   - "8080:8080"
+        # depends_on:
+        #   - db
+        #   - webscraper
+        # environment:
+        #   - MONGO_CONNECTION_STRING=mongodb://root:password@db:27017

@@ -13,7 +13,7 @@
 ## Requirements
 1. [python3](https://www.python.org/downloads/) `brew install python3`
 
-## Install
+## Install deps locally
 `python3 -m venv selenium_venv`
 `source selenium_venv/bin/activate`
 `pip install -r requirements.txt`

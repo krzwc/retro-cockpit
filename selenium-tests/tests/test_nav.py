@@ -5,7 +5,6 @@ from selenium.webdriver.common.keys import Keys
 @pytest.fixture(scope="module")
 def open_url(browser,url):
     browser.get(url)
-    assert browser.title == "React Example"
 
 def test_menu_items(browser, open_url):
     menuItemsCount = len(browser.find_elements(By.XPATH, '//*[@class="view-button-title"]'))
