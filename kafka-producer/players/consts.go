@@ -4,4 +4,7 @@ package players
 const KafkaServer = "localhost:9092"
 
 // KafkaTopic constant
-const KafkaTopic = "my-topic"
+const KafkaTopic = "Metrics"
+
+// PB metrics count
+const PBMetricsCount = 5
