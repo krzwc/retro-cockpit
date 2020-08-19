@@ -1,4 +1,4 @@
-package players
+package metrics
 
 // KafkaServer constant
 const KafkaServer = "localhost:9092"
@@ -6,5 +6,8 @@ const KafkaServer = "localhost:9092"
 // KafkaTopic constant
 const KafkaTopic = "Metrics"
 
-// PB metrics count
+// PBMetricsCount constant
 const PBMetricsCount = 5
+
+// BCMetricsCount constant
+const BCMetricsCount = 10

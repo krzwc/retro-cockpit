@@ -1,4 +1,4 @@
-package players
+package metrics
 
 import (
 	"context"
@@ -53,7 +53,7 @@ func (c *Consumer) Cleanup(_ sarama.ConsumerGroupSession) error {
 // ConsumeClaim function
 func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for msg := range claim.Messages() {
-		fmt.Printf("consumed a message: %v\n", string(msg.Value))
+		fmt.Printf("Metrics consumer consumed a message: %v\n", string(msg.Value))
 		sess.MarkMessage(msg, "")
 	}
 	return nil

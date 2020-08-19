@@ -1,4 +1,4 @@
-module kafka-producer
+module kafka-alarms
 
 go 1.14
 

@@ -1,7 +1,6 @@
-package players
+package alarms
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/Shopify/sarama"
@@ -17,8 +16,7 @@ func Producer() {
 	for {
 		msg := &sarama.ProducerMessage{
 			Topic: KafkaTopic,
-			// Value: sarama.ByteEncoder("Hello World " + time.Now().Format(time.RFC3339)),
-			Value: sarama.ByteEncoder(randomMetricName(PBMetricsCount) + " " + strconv.Itoa(randomInRange(100))),
+			Value: sarama.ByteEncoder("Alarm " + time.Now().Format(time.RFC3339) + " Info " + randomCritical()),
 		}
 
 		_, _, err = syncProducer.SendMessage(msg)
@@ -26,6 +24,6 @@ func Producer() {
 			panic(err)
 		}
 
-		time.Sleep(time.Second)
+		time.Sleep(3 * time.Second)
 	}
 }
