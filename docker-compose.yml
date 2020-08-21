@@ -19,7 +19,7 @@ services:
         environment:
         - ALLOW_ANONYMOUS_LOGIN=yes
 
-    kafka-server1:
+    kafka-server:
         image: 'bitnami/kafka:latest'
         networks:
         - kafka-net    
@@ -44,3 +44,12 @@ services:
     #     - ALLOW_PLAINTEXT_LISTENER=yes
     #     depends_on:
     #     - zookeeper-server
+
+    timescaledb:
+        build:
+            context: .
+            dockerfile: docker/timescaledb/Dockerfile
+        environment: 
+            - POSTGRES_PASSWORD=password
+        ports:
+            - 5432:5432
