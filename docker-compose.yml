@@ -45,11 +45,15 @@ services:
     #     depends_on:
     #     - zookeeper-server
 
-    timescaledb:
-        build:
-            context: .
-            dockerfile: docker/timescaledb/Dockerfile
-        environment: 
-            - POSTGRES_PASSWORD=password
-        ports:
-            - 5432:5432
+    # timescaledb:
+    #     build:
+    #         context: .
+    #         dockerfile: docker/timescaledb/Dockerfile
+    #     environment:
+    #         - POSTRES_USER=postgres
+    #         - POSTGRES_PASSWORD=password
+    #         - POSTGRES_DB=mytest
+    #     volumes:
+    #         - ./pgdata:/var/lib/postgresql/data
+    #     ports:
+    #         - 5432:5432

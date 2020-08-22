@@ -5,8 +5,8 @@ import (
 )
 
 func main() {
-	go alarms.Producer()
+	alarms.Producer()
 
-	alarmsConsumer := alarms.Consumer{}
-	alarmsConsumer.Consume()
+	// alarmsConsumer := alarms.Consumer{}
+	// alarmsConsumer.Consume()
 }

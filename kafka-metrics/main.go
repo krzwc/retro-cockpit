@@ -6,8 +6,8 @@ import (
 
 func main() {
 	go metrics.PBProducer()
-	go metrics.BCProducer()
+	metrics.BCProducer()
 
-	metricsConsumer := metrics.Consumer{}
-	metricsConsumer.Consume()
+	// metricsConsumer := metrics.Consumer{}
+	// metricsConsumer.Consume()
 }
