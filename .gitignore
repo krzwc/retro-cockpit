@@ -4,3 +4,5 @@ dist
 .idea
 coverage
 videos
+db-data/
+pgadmin-data/

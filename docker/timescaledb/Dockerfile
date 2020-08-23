@@ -1,1 +1,0 @@
-FROM timescale/timescaledb:1.7.1-pg11

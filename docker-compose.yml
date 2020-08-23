@@ -45,15 +45,34 @@ services:
     #     depends_on:
     #     - zookeeper-server
 
-    # timescaledb:
-    #     build:
-    #         context: .
-    #         dockerfile: docker/timescaledb/Dockerfile
-    #     environment:
-    #         - POSTRES_USER=postgres
-    #         - POSTGRES_PASSWORD=password
-    #         - POSTGRES_DB=mytest
-    #     volumes:
-    #         - ./pgdata:/var/lib/postgresql/data
-    #     ports:
-    #         - 5432:5432
+    timescaledb:
+        image: timescale/timescaledb:1.7.1-pg11
+        environment:
+            POSTGRES_DB: postgres
+            POSTRES_USER: postgres
+            POSTGRES_PASSWORD: password
+        volumes:
+            - ./db-data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        restart: unless-stopped
+    
+    pgadmin:
+        image: dpage/pgadmin4:4.25
+        depends_on: 
+            - timescaledb
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
+            PGADMIN_DEFAULT_PASSWORD: secret
+            PGADMIN_LISTEN_PORT: 80
+        ports:
+            - "8080:80"
+        volumes:
+            - ./pgadmin-data:/var/lib/pgadmin
+        links:
+            - "timescaledb:pgsql-server"
+        restart: unless-stopped
+        
+volumes:
+    db-data:
+    pgadmin-data:
