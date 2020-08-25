@@ -46,11 +46,9 @@ services:
     #     - zookeeper-server
 
     timescaledb:
-        image: timescale/timescaledb:1.7.1-pg11
-        environment:
-            POSTGRES_DB: postgres
-            POSTRES_USER: postgres
-            POSTGRES_PASSWORD: password
+        build:
+          context: .
+          dockerfile: docker/timescaledb/Dockerfile
         volumes:
             - ./db-data:/var/lib/postgresql/data
         ports:
@@ -62,8 +60,8 @@ services:
         depends_on: 
             - timescaledb
         environment:
-            PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
-            PGADMIN_DEFAULT_PASSWORD: secret
+            PGADMIN_DEFAULT_EMAIL: admin@localhost
+            PGADMIN_DEFAULT_PASSWORD: password
             PGADMIN_LISTEN_PORT: 80
         ports:
             - "8080:80"
