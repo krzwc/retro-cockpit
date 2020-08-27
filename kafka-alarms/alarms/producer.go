@@ -16,7 +16,7 @@ func Producer() {
 	for {
 		msg := &sarama.ProducerMessage{
 			Topic: KafkaTopic,
-			Value: sarama.ByteEncoder("Alarm " + time.Now().Format(time.RFC3339) + " Info " + randomCritical()),
+			Value: sarama.ByteEncoder("Alarm " + time.Now().Format(time.RFC1123Z) + " Info " + randomSeverity()),
 		}
 
 		_, _, err = syncProducer.SendMessage(msg)
