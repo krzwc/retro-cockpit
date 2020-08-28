@@ -9,13 +9,25 @@ import (
 
 var db *gorm.DB //database
 
+// Alarms struct
+type Alarms struct {
+	gorm.Model
+
+	Time     string
+	Severity string
+}
+
 func main() {
-	conn, err := gorm.Open("postgres", "host=172.27.0.2 port=5432 user=postgres dbname=postgres password=password")
+	conn, err := gorm.Open("postgres", "host=localhost port=5432 dbname=retro_cockpit user=postgres password=password sslmode=disable")
 	if err != nil {
 		fmt.Print(err)
 	}
 	defer conn.Close()
 	db = conn
-	db.Debug().AutoMigrate(&Account{}, &Contact{}) //Database migration
+	db.Debug().AutoMigrate(&Alarms{}) //Database migration
 	fmt.Println("Successfully connected!")
+
+	var alarms Alarms
+	db.Raw("SELECT time, severity FROM alarms WHERE id = ?", 0).Scan(&alarms)
+	fmt.Print(alarms)
 }
