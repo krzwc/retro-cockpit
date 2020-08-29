@@ -75,6 +75,8 @@ func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.C
 		saveToDb(string(msg.Value)[6:38], string(msg.Value)[43:])
 		sess.MarkMessage(msg, "")
 	}
+	defer db.Close()
+
 	return nil
 }
 
@@ -89,7 +91,6 @@ func openDb() {
 	if err != nil {
 		fmt.Print(err)
 	}
-	defer conn.Close()
 	db = conn
 	db.Debug().AutoMigrate(&Alarms{}) //Database migration
 	fmt.Println("Successfully connected!")

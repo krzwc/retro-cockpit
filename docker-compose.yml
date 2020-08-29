@@ -56,8 +56,6 @@ services:
         build:
             context: .
             dockerfile: docker/kafka-alarms/Dockerfile
-        # ports:
-        #     - "8080:8080"
         depends_on:
             - zookeeper
             - kafka-broker
@@ -69,8 +67,6 @@ services:
         build:
             context: .
             dockerfile: docker/kafka-alarms-consumer/Dockerfile 
-        # ports:
-        #     - "8080:8080"
         depends_on:
             - zookeeper
             - kafka-broker
