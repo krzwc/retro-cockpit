@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS alarms (
     id SERIAL,
     timestamp TIMESTAMPTZ NOT NULL,
     severity CHAR(10),
+    resolved BOOLEAN,
     PRIMARY KEY (id)
 );
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -28,6 +29,9 @@ func main() {
 	fmt.Println("Successfully connected!")
 
 	var alarms Alarms
-	db.Raw("SELECT time, severity FROM alarms WHERE id = ?", 0).Scan(&alarms)
+	/* db.Raw("SELECT time, severity FROM alarms WHERE id = ?", 0).Scan(&alarms) */
+	/* db.First(&alarms, 0) */
+	db.Create(&Alarms{Time: time.Now().Format(time.RFC1123Z), Severity: "critical"})
+	db.Find(&alarms)
 	fmt.Print(alarms)
 }

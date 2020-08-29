@@ -27,23 +27,14 @@ services:
         - '9092:9092'
         environment:
         - KAFKA_ZOOKEEPER_CONNECT=zookeeper-server:2181
-        - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+        - KAFKA_ADVERTISED_HOST_NAME=kafka-server
+        - KAFKA_ADVERTISED_PORT=9092
+        - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-server:9092
         - ALLOW_PLAINTEXT_LISTENER=yes
+        # - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+        # - ALLOW_PLAINTEXT_LISTENER=yes
         depends_on:
         - zookeeper-server
-
-    # kafka-server2:
-    #     image: 'bitnami/kafka:latest'
-    #     networks:
-    #     - kafka-net    
-    #     ports:
-    #     - '9093:9092'
-    #     environment:
-    #     - KAFKA_ZOOKEEPER_CONNECT=zookeeper-server:2181
-    #     - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9093
-    #     - ALLOW_PLAINTEXT_LISTENER=yes
-    #     depends_on:
-    #     - zookeeper-server
 
     timescaledb:
         build:
@@ -70,6 +61,41 @@ services:
         links:
             - "timescaledb:pgsql-server"
         restart: unless-stopped
+    
+    kafka-alarms:
+        build:
+            context: .
+            dockerfile: docker/kafka-alarms/Dockerfile
+        # ports:
+        #     - "8080:8080"
+        networks:
+            - kafka-net
+        depends_on:
+            - zookeeper-server
+            - kafka-server
+        environment:
+            - KAFKA_CONNECTION_STRING=kafka-server:9092
+
+    kafka-alarms-consumer:
+        build:
+            context: .
+            dockerfile: docker/kafka-alarms/Dockerfile 
+        # ports:
+        #     - "8080:8080"
+        networks:
+            - kafka-net
+        depends_on:
+            - zookeeper-server
+            - kafka-server
+            - timescaledb
+            - kafka-alarms
+        environment:
+            - HOST=timescaledb
+            - PORT=5432
+            - DB_NAME=retro_cockpit
+            - USER=postgres
+            - PASSWORD=password
+            - KAFKA_CONNECTION_STRING=kafka-server:9092
         
 volumes:
     db-data:
