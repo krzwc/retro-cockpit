@@ -6,7 +6,4 @@ import (
 
 func main() {
 	alarms.Producer()
-
-	// alarmsConsumer := alarms.Consumer{}
-	// alarmsConsumer.Consume()
 }
