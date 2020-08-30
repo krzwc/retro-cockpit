@@ -80,6 +80,35 @@ services:
             - USER=postgres
             - PASSWORD=password
         restart: always
+    
+    kafka-metrics:
+        build:
+            context: .
+            dockerfile: docker/kafka-metrics/Dockerfile
+        depends_on:
+            - zookeeper
+            - kafka-broker
+        environment:
+            - KAFKA_CONNECTION_STRING=kafka-broker:9092
+        restart: always
+    
+    kafka-metrics-consumer:
+        build:
+            context: .
+            dockerfile: docker/kafka-metrics-consumer/Dockerfile 
+        depends_on:
+            - zookeeper
+            - kafka-broker
+            - timescaledb
+            - kafka-alarms
+        environment:
+            - KAFKA_CONNECTION_STRING=kafka-broker:9092
+            - HOST=timescaledb
+            - PORT=5432
+            - DB_NAME=retro_cockpit
+            - USER=postgres
+            - PASSWORD=password
+        restart: always
         
 volumes:
     db-data:

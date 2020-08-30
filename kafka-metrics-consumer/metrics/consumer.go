@@ -3,14 +3,41 @@ package metrics
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Shopify/sarama"
+	"github.com/jinzhu/gorm"
+
+	// blank import
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 // Consumer type
 type Consumer struct {
 }
+
+// PB_Metrics struct
+type PB_Metrics struct {
+	gorm.Model
+
+	Pb    string
+	Value int
+}
+
+// BC_Metrics struct
+type BC_Metrics struct {
+	gorm.Model
+
+	Core  string
+	Freq0 int
+	Freq1 int
+}
+
+var db *gorm.DB //database
 
 // Consume function
 func (c *Consumer) Consume() {
@@ -52,9 +79,60 @@ func (c *Consumer) Cleanup(_ sarama.ConsumerGroupSession) error {
 
 // ConsumeClaim function
 func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
+	openDb()
 	for msg := range claim.Messages() {
-		fmt.Printf("Metrics consumer consumed a message: %v\n", string(msg.Value))
+		msgStr := string(msg.Value)
+		fmt.Printf("Metrics consumer consumed a message: %v\n", msgStr)
+		isPBMetric := strings.HasPrefix(strings.Fields(msgStr)[0], "pb")
+		isBCMetric := strings.HasPrefix(strings.Fields(msgStr)[0], "core")
+		// saveToDb(string(msg.Value)[6:38], string(msg.Value)[43:])
+		if isPBMetric {
+			pbVal, err := strconv.Atoi(strings.Fields(msgStr)[1])
+			if err != nil {
+				log.Fatal(err)
+			}
+			savePBMetricToDb(strings.Fields(msgStr)[0], pbVal)
+		}
+		if isBCMetric {
+			bcAlarmValues := strings.Split(msgStr, ",")
+			freq0, err := strconv.Atoi(bcAlarmValues[1][7:])
+			if err != nil {
+				log.Fatal(err)
+			}
+			freq1, err := strconv.Atoi(bcAlarmValues[2][7:])
+			if err != nil {
+				log.Fatal(err)
+			}
+			saveBCMetricToDb(bcAlarmValues[0], freq0, freq1)
+		}
 		sess.MarkMessage(msg, "")
 	}
+	defer db.Close()
+
 	return nil
+}
+
+func openDb() {
+	HOST := os.Getenv("HOST")
+	PORT := os.Getenv("PORT")
+	DB_NAME := os.Getenv("DB_NAME")
+	USER := os.Getenv("USER")
+	PASSWORD := os.Getenv("PASSWORD")
+
+	conn, err := gorm.Open("postgres", "host="+HOST+" port="+PORT+" dbname="+DB_NAME+" user="+USER+" password="+PASSWORD+" sslmode=disable")
+	if err != nil {
+		fmt.Print(err)
+	}
+	db = conn
+	db.Debug().AutoMigrate(&PB_Metrics{}) //Database migration
+	db.Debug().AutoMigrate(&BC_Metrics{}) //Database migration
+	fmt.Println("Successfully connected!")
+}
+
+func savePBMetricToDb(pb string, value int) {
+	db.Create(&PB_Metrics{Pb: pb, Value: value})
+}
+
+func saveBCMetricToDb(core string, freq0 int, freq1 int) {
+	db.Create(&BC_Metrics{Core: core, Freq0: freq0, Freq1: freq1})
 }
