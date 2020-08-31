@@ -24,17 +24,19 @@ type Consumer struct {
 type PB_Metrics struct {
 	gorm.Model
 
-	Pb    string
-	Value int
+	Pb        string
+	Value     int
+	Timestamp string
 }
 
 // BC_Metrics struct
 type BC_Metrics struct {
 	gorm.Model
 
-	Core  string
-	Freq0 int
-	Freq1 int
+	Core      string
+	Freq0     int
+	Freq1     int
+	Timestamp string
 }
 
 var db *gorm.DB //database
@@ -85,13 +87,12 @@ func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.C
 		fmt.Printf("Metrics consumer consumed a message: %v\n", msgStr)
 		isPBMetric := strings.HasPrefix(strings.Fields(msgStr)[0], "pb")
 		isBCMetric := strings.HasPrefix(strings.Fields(msgStr)[0], "core")
-		// saveToDb(string(msg.Value)[6:38], string(msg.Value)[43:])
 		if isPBMetric {
 			pbVal, err := strconv.Atoi(strings.Fields(msgStr)[1])
 			if err != nil {
 				log.Fatal(err)
 			}
-			savePBMetricToDb(strings.Fields(msgStr)[0], pbVal)
+			savePBMetricToDb(strings.Fields(msgStr)[0], pbVal, msgStr[strings.Index(msgStr, "timestamp")+10:])
 		}
 		if isBCMetric {
 			bcAlarmValues := strings.Split(msgStr, ",")
@@ -103,7 +104,9 @@ func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.C
 			if err != nil {
 				log.Fatal(err)
 			}
-			saveBCMetricToDb(bcAlarmValues[0], freq0, freq1)
+			timestamp := bcAlarmValues[3] + "," + bcAlarmValues[4]
+
+			saveBCMetricToDb(bcAlarmValues[0], freq0, freq1, timestamp[strings.Index(timestamp, "timestamp")+10:])
 		}
 		sess.MarkMessage(msg, "")
 	}
@@ -129,10 +132,10 @@ func openDb() {
 	fmt.Println("Successfully connected!")
 }
 
-func savePBMetricToDb(pb string, value int) {
-	db.Create(&PB_Metrics{Pb: pb, Value: value})
+func savePBMetricToDb(pb string, value int, timestamp string) {
+	db.Create(&PB_Metrics{Pb: pb, Value: value, Timestamp: timestamp})
 }
 
-func saveBCMetricToDb(core string, freq0 int, freq1 int) {
-	db.Create(&BC_Metrics{Core: core, Freq0: freq0, Freq1: freq1})
+func saveBCMetricToDb(core string, freq0 int, freq1 int, timestamp string) {
+	db.Create(&BC_Metrics{Core: core, Freq0: freq0, Freq1: freq1, Timestamp: timestamp})
 }

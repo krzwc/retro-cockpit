@@ -17,7 +17,7 @@ func PBProducer() {
 	for {
 		msg := &sarama.ProducerMessage{
 			Topic: KafkaTopic,
-			Value: sarama.ByteEncoder(randomMetricName("pb", PBMetricsCount) + " " + strconv.Itoa(randomInRange(100))),
+			Value: sarama.ByteEncoder(randomMetricName("pb", PBMetricsCount) + " " + strconv.Itoa(randomInRange(100)) + ", timestamp " + time.Now().Format(time.RFC1123Z)),
 		}
 
 		_, _, err = syncProducer.SendMessage(msg)
@@ -39,7 +39,7 @@ func BCProducer() {
 	for {
 		msg := &sarama.ProducerMessage{
 			Topic: KafkaTopic,
-			Value: sarama.ByteEncoder(randomMetricName("core", BCMetricsCount) + ", freq0 " + strconv.Itoa(randomInRange(100)) + ", freq1 " + strconv.Itoa(randomInRange(100))),
+			Value: sarama.ByteEncoder(randomMetricName("core", BCMetricsCount) + ", freq0 " + strconv.Itoa(randomInRange(100)) + ", freq1 " + strconv.Itoa(randomInRange(100)) + ", timestamp " + time.Now().Format(time.RFC1123Z)),
 		}
 
 		_, _, err = syncProducer.SendMessage(msg)
