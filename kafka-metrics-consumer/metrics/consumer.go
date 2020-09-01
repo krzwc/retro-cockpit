@@ -88,7 +88,7 @@ func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.C
 		isPBMetric := strings.HasPrefix(strings.Fields(msgStr)[0], "pb")
 		isBCMetric := strings.HasPrefix(strings.Fields(msgStr)[0], "core")
 		if isPBMetric {
-			pbVal, err := strconv.Atoi(strings.Fields(msgStr)[1])
+			pbVal, err := strconv.Atoi(trimSuffix(strings.Fields(msgStr)[1], ","))
 			if err != nil {
 				log.Fatal(err)
 			}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Shopify/sarama"
@@ -72,7 +73,13 @@ func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.C
 	openDb()
 	for msg := range claim.Messages() {
 		fmt.Printf("Alarms consumer consumed a message: %v\n", string(msg.Value))
-		saveToDb(string(msg.Value)[6:38], string(msg.Value)[43:])
+		var severity string
+		if strings.Contains(string(msg.Value), "Info") {
+			severity = string(msg.Value)[43:]
+		} else {
+			severity = ""
+		}
+		saveToDb(string(msg.Value)[6:37], severity)
 		sess.MarkMessage(msg, "")
 	}
 	defer db.Close()

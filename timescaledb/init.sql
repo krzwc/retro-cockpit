@@ -7,18 +7,20 @@ CREATE TABLE IF NOT EXISTS alarms (
 );
 
 CREATE TABLE IF NOT EXISTS pb_metrics (
+    id SERIAL,
     pb CHAR(3),
     value SMALLINT,
     timestamp TIMESTAMPTZ NOT NULL,
-    PRIMARY KEY (pb)
+    PRIMARY KEY (SERIAL)
 );
 
 CREATE TABLE IF NOT EXISTS bc_metrics (
+    id SERIAL,
     core CHAR(5),
     freq0 SMALLINT,
     freq1 SMALLINT,
     timestamp TIMESTAMPTZ NOT NULL,
-    PRIMARY KEY (core)
+    PRIMARY KEY (SERIAL)
 );
 
 SELECT create_hypertable('alarms', 'timestamp');
