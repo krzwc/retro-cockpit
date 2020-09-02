@@ -79,6 +79,7 @@ func (c *Consumer) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.C
 		} else {
 			severity = ""
 		}
+
 		saveToDb(string(msg.Value)[6:37], severity)
 		sess.MarkMessage(msg, "")
 	}

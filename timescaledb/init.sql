@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS pb_metrics (
     pb CHAR(3),
     value SMALLINT,
     timestamp TIMESTAMPTZ NOT NULL,
-    PRIMARY KEY (SERIAL)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS bc_metrics (
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS bc_metrics (
     freq0 SMALLINT,
     freq1 SMALLINT,
     timestamp TIMESTAMPTZ NOT NULL,
-    PRIMARY KEY (SERIAL)
+    PRIMARY KEY (id)
 );
 
 SELECT create_hypertable('alarms', 'timestamp');

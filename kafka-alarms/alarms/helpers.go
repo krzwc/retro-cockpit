@@ -6,7 +6,7 @@ import (
 
 func randomSeverity() string {
 	if v := rand.Intn(11); v > 7 {
-		return "critical"
+		return "Info critical"
 	}
 
 	return ""

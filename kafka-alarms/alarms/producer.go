@@ -16,17 +16,9 @@ func Producer() {
 	}
 
 	for {
-		severity := randomSeverity()
-		var severityMsg string
-		if severity != "" {
-			severityMsg = " Info " + severityMsg
-		} else {
-			severityMsg = ""
-		}
-
 		msg := &sarama.ProducerMessage{
 			Topic: KafkaTopic,
-			Value: sarama.ByteEncoder("Alarm " + time.Now().Format(time.RFC1123Z) + severityMsg),
+			Value: sarama.ByteEncoder("Alarm " + time.Now().Format(time.RFC1123Z) + " " + randomSeverity()),
 		}
 
 		_, _, err = syncProducer.SendMessage(msg)
