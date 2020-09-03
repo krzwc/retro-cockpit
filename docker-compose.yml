@@ -70,8 +70,8 @@ services:
         depends_on:
             - zookeeper
             - kafka-broker
-            - timescaledb
             - kafka-alarms
+            - timescaledb
         environment:
             - KAFKA_CONNECTION_STRING=kafka-broker:9092
             - HOST=timescaledb
@@ -99,8 +99,8 @@ services:
         depends_on:
             - zookeeper
             - kafka-broker
-            - timescaledb
             - kafka-metrics
+            - timescaledb
         environment:
             - KAFKA_CONNECTION_STRING=kafka-broker:9092
             - HOST=timescaledb
