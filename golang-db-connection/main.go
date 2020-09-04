@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -16,10 +16,17 @@ type Alarms struct {
 
 	Time     string
 	Severity string
+	Resolved bool
 }
 
 func main() {
-	conn, err := gorm.Open("postgres", "host=localhost port=5432 dbname=retro_cockpit user=postgres password=password sslmode=disable")
+	HOST := os.Getenv("HOST")
+	PORT := os.Getenv("PORT")
+	DB_NAME := os.Getenv("DB_NAME")
+	USER := os.Getenv("USER")
+	PASSWORD := os.Getenv("PASSWORD")
+
+	conn, err := gorm.Open("postgres", "host="+HOST+" port="+PORT+" dbname="+DB_NAME+" user="+USER+" password="+PASSWORD+" sslmode=disable")
 	if err != nil {
 		fmt.Print(err)
 	}
@@ -29,9 +36,7 @@ func main() {
 	fmt.Println("Successfully connected!")
 
 	var alarms Alarms
-	/* db.Raw("SELECT time, severity FROM alarms WHERE id = ?", 0).Scan(&alarms) */
-	/* db.First(&alarms, 0) */
-	db.Create(&Alarms{Time: time.Now().Format(time.RFC1123Z), Severity: "critical"})
+	/* db.Create(&Alarms{Time: time.Now().Format(time.RFC1123Z), Severity: "critical"}) */
 	db.Find(&alarms)
 	fmt.Print(alarms)
 }
