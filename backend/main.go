@@ -4,13 +4,22 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
 
+// Alarm struct
+type Alarm struct {
+	Time     string `json:"time"`
+	Severity string `json:"severity"`
+	Resolved bool   `json:"resolved"`
+}
+
 var clients = make(map[*websocket.Conn]bool) // connected clients
-var broadcast = make(chan Message)           // broadcast channel
+// var broadcast = make(chan Message)           // broadcast channel
 
 // Configure the upgrader
 var upgrader = websocket.Upgrader{
@@ -19,11 +28,12 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// Define our message object
-type Message struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Message  string `json:"message"`
+func randomSeverity() string {
+	if v := rand.Intn(11); v > 7 {
+		return "critical"
+	}
+
+	return ""
 }
 
 func main() {
@@ -65,11 +75,19 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		// Send the newly received message to the broadcast channel
 		broadcast <- msg
 	} */
-	err = ws.WriteMessage(websocket.TextMessage, []byte("hi"))
-	if err != nil {
-		log.Printf("Websocket error: %s", err)
-		ws.Close()
+	/* err = ws.WriteMessage(websocket.TextMessage, []byte("hi")) */
+	var alarm Alarm
+	for {
+		alarm = Alarm{time.Now().Format(time.RFC1123Z), randomSeverity(), false}
+		err = ws.WriteJSON(alarm)
+		if err != nil {
+			log.Printf("Websocket error: %s", err)
+			ws.Close()
+		}
+
+		time.Sleep(3 * time.Second)
 	}
+
 }
 
 /* func handleMessages() {
