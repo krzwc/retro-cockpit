@@ -3,9 +3,9 @@ import { convertTimestamp } from 'common/services/time-service';
 
 const generateAlarm = () => {
     return {
-        date: convertTimestamp(Date.now()),
-        active: true,
-        info: "No data"
+        time: convertTimestamp(Date.now()),
+        severity: "critical",
+        resolved: false,
     }
 };
 
@@ -17,9 +17,9 @@ export interface AlarmsModel extends ModelConfig {
 }
 
 export interface Alarm {
-    date: string;
-    active: boolean;
-    info: string;
+    time: string;
+    severity: string;
+    resolved: boolean;
 }
 
 const INITIAL_STATE = [generateAlarm()] as Alarm[];
@@ -33,12 +33,14 @@ export const alarms: AlarmsModel = {
         updateData: (state: AlarmsState) => {
             return [ generateAlarm(), ...state ]
         },
+        addAlarm: (state: AlarmsState, payload: Alarm) => {
+            return [ payload, ...state ]
+        },
         resolveAlarm: (state: AlarmsState, payload) => {
-
-            return state.map((item) => item.date === payload ? { ...item, active: false } : item )
+            return state.map((item) => item.time === payload ? { ...item, resolved: true } : item )
         },
         resolveAlarms: (state: AlarmsState) => {
-            return state.map((alarm) => ({ ...alarm, active: false }));
+            return state.map((alarm) => ({ ...alarm, resolved: true }));
         }
     },
 };

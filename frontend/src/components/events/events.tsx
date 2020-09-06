@@ -14,7 +14,7 @@ import styles from './style.scss';
 type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
 type EventsProps = connectedProps;
 
-const checkedBasedOnAllAlarms = (alarms: Alarm[]) => alarms.some((alarm) => alarm.active === true);
+const checkedBasedOnAllAlarms = (alarms: Alarm[]) => alarms.some((alarm) => alarm.resolved === true);
 
 const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat, alarms, resolveAlarms }) => {
     const [messages, setMessages] = useState(chat);

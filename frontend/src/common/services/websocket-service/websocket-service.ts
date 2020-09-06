@@ -4,7 +4,8 @@
 
 import { Action } from 'redux';
 
-const WS_ENDPOINT = 'ws://localhost:3030'
+// const WS_ENDPOINT = 'ws://localhost:3030'
+const WS_ENDPOINT = 'ws://localhost:8000/ws'
 
 export default class WebSocketService {
     private static ws: WebSocket;

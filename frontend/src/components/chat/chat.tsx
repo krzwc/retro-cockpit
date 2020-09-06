@@ -30,10 +30,10 @@ interface ChatProps {
 class Chat extends PureComponent<ChatProps> {
     private messageListRef = React.createRef<HTMLDivElement>();
 
-    public componentDidMount() {
+    /* public componentDidMount() {
         WebSocketService.open();
         WebSocketService.onMessage(this.props.addMessage);
-    }
+    } */
 
     public componentDidUpdate() {
         if (this.messageListRef.current) {

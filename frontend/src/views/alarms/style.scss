@@ -2,8 +2,19 @@
 
 .table {
     @include center('horizontally');
+
+    tr td:nth-of-type(2) {
+        @include center;
+        height: 100%;
+
+        img {
+            width: 42px;
+            height: 32px;
+        }
+    }
 }
 
 .toggle {
     text-align: center;
 }
+
