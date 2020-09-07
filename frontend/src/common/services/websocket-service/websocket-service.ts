@@ -4,14 +4,13 @@
 
 import { Action } from 'redux';
 
-// const WS_ENDPOINT = 'ws://localhost:3030'
-const WS_ENDPOINT = 'ws://localhost:8000/ws'
-
 export default class WebSocketService {
     private static ws: WebSocket;
+    private static endpoint: string;
     
-    static init() {
-      this.ws = new WebSocket(WS_ENDPOINT);
+    static init(endpoint: string) {
+      this.endpoint = endpoint;
+      this.ws = new WebSocket(endpoint);
     }
 
     static open() {
@@ -23,7 +22,7 @@ export default class WebSocketService {
             // on connecting, do nothing but log it to the console
             console.log('disconnected');
             // automatically try to reconnect on connection loss
-            this.init();
+            this.init(this.endpoint);
         })        
     }
 

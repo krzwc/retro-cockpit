@@ -10,41 +10,51 @@ export interface MetricsModel extends ModelConfig {
 
 export const DEFAULT_USER = 'User1';
 
+export interface PBMetric {
+    pb: string;
+    value: number;
+}
+
+export interface BCMetric {
+    core: string,
+    freq0: number,
+    freq1: number,
+}
+
 export type BarChartData = {
-    name: string,
-    freq: number,
-    freq2: number,
+    core: string,
+    freq0: number,
+    freq1: number,
 }
 
 export type PBData = {
     [key: string]: number;
 }
 
-
 type MetricsState = typeof INITIAL_STATE;
 
-const randomDataArray = (nb_elem: number) => {
-    return range(nb_elem).map((item) => ({
-        name: 'core ' + item,
-        freq: Math.round(Math.random() * 1000),
-        freq2: Math.round(Math.random() * 1000),
+const initBCData = (bc: number) => {
+    return range(bc).map((item) => ({
+        core: 'core' + item,
+        freq0: 0,
+        freq1: 0,
     }));
 };
 
-const randomProgressBarsValues = (pb_amount: number) => {
-    return range(pb_amount).reduce((acc, _,index) => {
-        return { ...acc, [`pb${index}`]: Math.round(Math.random() * 100) }
+const initPBData = (pb: number) => {
+    return range(pb).reduce((acc, _, index) => {
+        return { ...acc, [`pb${index}`]: 0 }
     }, {})
 }
 
 const INITIAL_STATE = {
     progressbars: { 
         pbNo: 5,
-        data: randomProgressBarsValues(5) as PBData,
+        data: initPBData(5) as PBData,
     },
     barchart: {
         barsNo: 10,
-        data: randomDataArray(10) as BarChartData[],
+        data: initBCData(10) as BarChartData[],
     }
 };
 
@@ -52,11 +62,21 @@ export const metrics: MetricsModel = {
     state: INITIAL_STATE,
     name: 'metrics',
     reducers: {
-        updateData: (state: MetricsState) => {
+        /* updateData: (state: MetricsState) => {
             return { ...state, barchart: { ...state.barchart, data: randomDataArray(state.barchart.barsNo) } }
         },
         updatePBData: (state: MetricsState) => {
             return { ...state, progressbars:  { ...state.progressbars, data: randomProgressBarsValues(state.progressbars.pbNo) } }
+        }, */
+        updatePB: (state: MetricsState, payload: PBMetric) => {
+            console.log(payload);
+            return { ...state, progressbars: { ...state.progressbars, data: { ...state.progressbars.data, [payload.pb]: payload.value }
+            } } },
+        updateBC: (state: MetricsState, payload: BCMetric) => {
+            console.log(payload);
+            return { ...state, barchart: { ...state.barchart, data: state.barchart.data.map((bc) => {
+                return bc.core === payload.core ? { core: payload.core, freq0: payload.freq0, freq1: payload.freq1 } : bc
+            }) } }
         },
     },
 };

@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -16,6 +17,21 @@ type Alarm struct {
 	Time     string `json:"time"`
 	Severity string `json:"severity"`
 	Resolved bool   `json:"resolved"`
+}
+
+// PB_Metric struct
+type PB_Metric struct {
+	Pb        string `json:"pb"`
+	Value     int    `json:"value"`
+	Timestamp string `json:"timestamp"`
+}
+
+// BC_Metric struct
+type BC_Metric struct {
+	Core      string `json:"core"`
+	Freq0     int    `json:"freq0"`
+	Freq1     int    `json:"freq1"`
+	Timestamp string `json:"timestamp"`
 }
 
 var clients = make(map[*websocket.Conn]bool) // connected clients
@@ -36,9 +52,23 @@ func randomSeverity() string {
 	return ""
 }
 
+func getTime() string {
+	return time.Now().Format(time.RFC1123Z)
+}
+
+func randomInRange(max int) int {
+	return rand.Intn(max)
+}
+
+func randomMetricName(group string, metricCount int) string {
+	return group + strconv.Itoa(randomInRange(metricCount))
+}
+
 func main() {
-	// Configure websocket route
-	http.HandleFunc("/ws", handleConnections)
+	// Configure websocket routes
+	http.HandleFunc("/alarms", handleAlarms)
+	http.HandleFunc("/pbmetrics", handlePBMetrics)
+	http.HandleFunc("/bcmetrics", handleBCMetrics)
 
 	// Start listening for incoming chat messages
 	/* go handleMessages() */
@@ -51,7 +81,7 @@ func main() {
 	}
 }
 
-func handleConnections(w http.ResponseWriter, r *http.Request) {
+func handleAlarms(w http.ResponseWriter, r *http.Request) {
 	// Upgrade initial GET request to a websocket
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -78,7 +108,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	/* err = ws.WriteMessage(websocket.TextMessage, []byte("hi")) */
 	var alarm Alarm
 	for {
-		alarm = Alarm{time.Now().Format(time.RFC1123Z), randomSeverity(), false}
+		alarm = Alarm{getTime(), randomSeverity(), false}
 		err = ws.WriteJSON(alarm)
 		if err != nil {
 			log.Printf("Websocket error: %s", err)
@@ -88,6 +118,54 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		time.Sleep(3 * time.Second)
 	}
 
+}
+
+func handlePBMetrics(w http.ResponseWriter, r *http.Request) {
+	// Upgrade initial GET request to a websocket
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Make sure we close the connection when the function returns
+	defer ws.Close()
+
+	// Register our new client
+	clients[ws] = true
+	var pbMetric PB_Metric
+	for {
+		pbMetric = PB_Metric{randomMetricName("pb", 5), randomInRange(100), getTime()}
+		err = ws.WriteJSON(pbMetric)
+		if err != nil {
+			log.Printf("Websocket error: %s", err)
+			ws.Close()
+		}
+
+		time.Sleep(10 * time.Second)
+	}
+}
+
+func handleBCMetrics(w http.ResponseWriter, r *http.Request) {
+	// Upgrade initial GET request to a websocket
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Make sure we close the connection when the function returns
+	defer ws.Close()
+
+	// Register our new client
+	clients[ws] = true
+	var bcMetric BC_Metric
+	for {
+		bcMetric = BC_Metric{randomMetricName("core", 10), randomInRange(100), randomInRange(100), getTime()}
+		err = ws.WriteJSON(bcMetric)
+		if err != nil {
+			log.Printf("Websocket error: %s", err)
+			ws.Close()
+		}
+
+		time.Sleep(7 * time.Second)
+	}
 }
 
 /* func handleMessages() {

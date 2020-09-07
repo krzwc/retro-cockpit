@@ -1,43 +1,39 @@
-import React, { Component } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 
 import { iRootState, Dispatch } from 'resources/store/store';
-import { BarChartData } from 'resources/store/models/metrics';
+import { BarChartData, BCMetric } from 'resources/store/models/metrics';
+import WebSocketService, { ENDPOINTS } from 'common/services/websocket-service';
 
 interface MovingChartProps {
     data: BarChartData[];
-    updateData(): Action;
+    updateBC(message: BCMetric): Action;
+    /* updateData(): Action; */
 }
 
-class MovingChart extends Component<MovingChartProps> {
-    private timerID: number;
+const MovingChart: FunctionComponent<MovingChartProps> = ({ data, updateBC }) => {
+    useEffect(() => {
+        WebSocketService.init(ENDPOINTS.BC_METRICS_ENDPOINT);
+        WebSocketService.open();
+        WebSocketService.onMessage(updateBC);
+    }, []);
 
-    componentDidMount() {
-        this.timerID = window.setInterval(() => this.props.updateData(), 10000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    render() {
-        return (
-            <ResponsiveContainer width="100%" height="100%">
-                <BarChart width={450} height={340} data={this.props.data}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <CartesianGrid strokeDasharray="5 5" />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="freq" fill="#8884d8" />
-                    <Bar dataKey="freq2" fill="#8214d8" />
-                </BarChart>
-            </ResponsiveContainer>
-        );
-    }
-}
+    return (
+        <ResponsiveContainer width="100%" height="100%">
+            <BarChart width={450} height={340} data={data}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="5 5" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="freq" fill="#8884d8" />
+                <Bar dataKey="freq2" fill="#8214d8" />
+            </BarChart>
+        </ResponsiveContainer>
+    );
+};
 
 const mapState = (state: iRootState) => ({
     data: state.metrics.barchart.data,
@@ -45,8 +41,11 @@ const mapState = (state: iRootState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => {
     return {
-        updateData: () => {
+        /* updateData: () => {
             return dispatch.metrics.updateData();
+        }, */
+        updateBC: (payload: BCMetric) => {
+            return dispatch.metrics.updateBC(payload);
         },
     };
 };

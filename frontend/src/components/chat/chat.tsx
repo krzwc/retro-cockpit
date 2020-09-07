@@ -14,7 +14,7 @@ import { iRootState, Dispatch } from 'resources/store/store';
 
 import WebSocketService from 'common/services/websocket-service';
 
-WebSocketService.init();
+/* WebSocketService.init(); */
 
 export interface Message {
     name: string;

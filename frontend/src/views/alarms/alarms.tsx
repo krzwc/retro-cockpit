@@ -5,30 +5,23 @@ import { take } from 'lodash-es';
 
 import { iRootState, Dispatch } from 'resources/store/store';
 import { Alarm } from 'resources/store/models/alarms';
-/* import useInterval from 'common/hooks'; */
 import Toggle from 'components/toggle';
 import { classNames } from 'common/helpers';
-import WebSocketService from 'common/services/websocket-service';
+import WebSocketService, { ENDPOINTS } from 'common/services/websocket-service';
 
 import styles from './style.scss';
 
-WebSocketService.init();
-
 interface AlarmsProps {
     data: Alarm[];
-    updateData(): Action;
-    addAlarm(message: Alarm): Action;
+    updateData(message: Alarm): Action;
     resolveAlarm(date: string): Action;
 }
 
-const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, addAlarm, resolveAlarm }) => {
-    /* useInterval(() => {
-        updateData();
-    }, 60000); */
-
+const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, resolveAlarm }) => {
     useEffect(() => {
+        WebSocketService.init(ENDPOINTS.ALARMS_ENDPOINT);
         WebSocketService.open();
-        WebSocketService.onMessage(addAlarm);
+        WebSocketService.onMessage(updateData);
     }, []);
 
     return (
@@ -38,17 +31,17 @@ const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, addAlarm, re
                     <tr>
                         <th>Time</th>
                         <th>Severity</th>
-                        <th>Resolved</th>
+                        <th>Active</th>
                     </tr>
                 </thead>
                 <tbody>
                     {take(data, 5).map((alarm) => {
                         return (
                             <tr key={alarm.time}>
-                                <td>{alarm.time}</td>
+                                <td>{new Date(alarm.time).toUTCString()}</td>
                                 <td>{alarm.severity === 'critical' && <img src="assets/images/error.png" />}</td>
                                 <td className={styles.toggle}>
-                                    <Toggle checked={alarm.resolved} onClick={() => resolveAlarm(alarm.time)} />
+                                    <Toggle checked={!alarm.resolved} onClick={() => resolveAlarm(alarm.time)} />
                                 </td>
                             </tr>
                         );
@@ -65,11 +58,8 @@ const mapState = (state: iRootState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => {
     return {
-        updateData: () => {
-            return dispatch.alarms.updateData();
-        },
-        addAlarm: (payload: Alarm) => {
-            return dispatch.alarms.addAlarm(payload);
+        updateData: (payload: Alarm) => {
+            return dispatch.alarms.updateData(payload);
         },
         resolveAlarm: (date: string) => {
             return dispatch.alarms.resolveAlarm(date);
