@@ -28,8 +28,8 @@ const MovingChart: FunctionComponent<MovingChartProps> = ({ data, updateBC }) =>
                 <CartesianGrid strokeDasharray="5 5" />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="freq" fill="#8884d8" />
-                <Bar dataKey="freq2" fill="#8214d8" />
+                <Bar dataKey="freq0" fill="#8884d8" />
+                <Bar dataKey="freq1" fill="#8214d8" />
             </BarChart>
         </ResponsiveContainer>
     );

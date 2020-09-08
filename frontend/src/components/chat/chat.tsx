@@ -12,9 +12,7 @@ import styles from './style.scss';
 
 import { iRootState, Dispatch } from 'resources/store/store';
 
-import WebSocketService from 'common/services/websocket-service';
-
-/* WebSocketService.init(); */
+import WebSocketService, { ENDPOINTS } from 'common/services/websocket-service';
 
 export interface Message {
     name: string;
@@ -30,10 +28,11 @@ interface ChatProps {
 class Chat extends PureComponent<ChatProps> {
     private messageListRef = React.createRef<HTMLDivElement>();
 
-    /* public componentDidMount() {
+    public componentDidMount() {
+        WebSocketService.init(ENDPOINTS.CHAT);
         WebSocketService.open();
         WebSocketService.onMessage(this.props.addMessage);
-    } */
+    }
 
     public componentDidUpdate() {
         if (this.messageListRef.current) {

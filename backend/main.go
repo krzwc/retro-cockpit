@@ -3,6 +3,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -32,6 +34,11 @@ type BC_Metric struct {
 	Freq0     int    `json:"freq0"`
 	Freq1     int    `json:"freq1"`
 	Timestamp string `json:"timestamp"`
+}
+
+type ChatMessage struct {
+	Name string `json:"name"`
+	Text string `json:"text"`
 }
 
 var clients = make(map[*websocket.Conn]bool) // connected clients
@@ -69,6 +76,7 @@ func main() {
 	http.HandleFunc("/alarms", handleAlarms)
 	http.HandleFunc("/pbmetrics", handlePBMetrics)
 	http.HandleFunc("/bcmetrics", handleBCMetrics)
+	http.HandleFunc("/chat", handleChat)
 
 	// Start listening for incoming chat messages
 	/* go handleMessages() */
@@ -165,6 +173,45 @@ func handleBCMetrics(w http.ResponseWriter, r *http.Request) {
 		}
 
 		time.Sleep(7 * time.Second)
+	}
+}
+
+func handleChat(w http.ResponseWriter, r *http.Request) {
+	// Upgrade initial GET request to a websocket
+	ws, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Make sure we close the connection when the function returns
+	defer ws.Close()
+
+	// Register our new client
+	clients[ws] = true
+	for {
+		_, message, err := ws.ReadMessage()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		// Send it out to every client that is currently connected
+		for client := range clients {
+			err = client.WriteMessage(websocket.TextMessage, message)
+			if err != nil {
+				log.Printf("Websocket error: %s", err)
+				ws.Close()
+			}
+			confirmation := &ChatMessage{Name: "BOT", Text: "Affirmative"}
+			confirmationMsg, err := json.Marshal(confirmation)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			err = client.WriteMessage(websocket.TextMessage, []byte(confirmationMsg))
+			if err != nil {
+				log.Printf("Websocket error: %s", err)
+				ws.Close()
+			}
+		}
 	}
 }
 
