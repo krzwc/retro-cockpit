@@ -17,12 +17,21 @@ interface AlarmsProps {
     resolveAlarm(date: string): Action;
 }
 
+const messageEncoder = (messageString: string, type: string) => {
+    return { time: messageString, type };
+};
+
 const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, resolveAlarm }) => {
     useEffect(() => {
         WebSocketService.init(ENDPOINTS.ALARMS_ENDPOINT);
         WebSocketService.open();
         WebSocketService.onMessage(updateData);
     }, []);
+
+    const handleOnClick = (alarm: Alarm) => () => {
+        resolveAlarm(alarm.time);
+        WebSocketService.sendMessage(messageEncoder(alarm.time, 'RESOLVE_ALARM'));
+    };
 
     return (
         <div className={classNames('nes-table-responsive', styles.table)}>
@@ -41,7 +50,7 @@ const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, resolveAlarm
                                 <td>{new Date(alarm.time).toUTCString()}</td>
                                 <td>{alarm.severity === 'critical' && <img src="assets/images/error.png" />}</td>
                                 <td className={styles.toggle}>
-                                    <Toggle checked={!alarm.resolved} onClick={() => resolveAlarm(alarm.time)} />
+                                    <Toggle checked={!alarm.resolved} onClick={handleOnClick(alarm)} />
                                 </td>
                             </tr>
                         );

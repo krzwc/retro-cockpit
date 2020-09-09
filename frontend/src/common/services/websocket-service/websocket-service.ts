@@ -34,8 +34,10 @@ export default class WebSocketService {
       });
     }
 
-    static sendMessage(message: object, handler: (message: object) => Action) {
+    static sendMessage(message: object, handler?: (message: object) => Action) {
         this.ws.send(JSON.stringify(message));
-        handler(message);
+        if(handler) {
+          handler(message);
+        }
     }
   }

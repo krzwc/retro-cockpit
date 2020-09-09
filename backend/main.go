@@ -41,6 +41,11 @@ type ChatMessage struct {
 	Text string `json:"text"`
 }
 
+type ResolveAlarm struct {
+	Time string `json:"time"`
+	Type string `json:"type"`
+}
+
 var clients = make(map[*websocket.Conn]bool) // connected clients
 // var broadcast = make(chan Message)           // broadcast channel
 
@@ -89,6 +94,16 @@ func main() {
 	}
 }
 
+func handleResolveAlarm(ws *websocket.Conn) {
+	var resolveAlarm ResolveAlarm
+	err := ws.ReadJSON(resolveAlarm)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(resolveAlarm)
+}
+
 func handleAlarms(w http.ResponseWriter, r *http.Request) {
 	// Upgrade initial GET request to a websocket
 	ws, err := upgrader.Upgrade(w, r, nil)
@@ -114,6 +129,8 @@ func handleAlarms(w http.ResponseWriter, r *http.Request) {
 		broadcast <- msg
 	} */
 	/* err = ws.WriteMessage(websocket.TextMessage, []byte("hi")) */
+	go handleResolveAlarm(ws)
+
 	var alarm Alarm
 	for {
 		alarm = Alarm{getTime(), randomSeverity(), false}
