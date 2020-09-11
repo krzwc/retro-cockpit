@@ -8,6 +8,7 @@ import { iRootState, Dispatch } from 'resources/store/store';
 import { classNames } from 'common/helpers';
 import Toggle from 'components/toggle';
 import { Alarm } from 'resources/store/models/alarms';
+import WebSocketService, { ENDPOINTS, MESSAGE_TYPES } from 'common/services/websocket-service';
 
 import styles from './style.scss';
 
@@ -15,6 +16,8 @@ type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatc
 type EventsProps = connectedProps;
 
 const checkedBasedOnAllAlarms = (alarms: Alarm[]) => alarms.some((alarm) => alarm.resolved === false);
+
+const resolveAlarmsMessage = { type: MESSAGE_TYPES.RESOLVE_ALARMS };
 
 const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat, alarms, resolveAlarms }) => {
     const [messages, setMessages] = useState(chat);
@@ -27,9 +30,19 @@ const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat, 
         }
     }, [chat]);
 
+    useEffect(() => {
+        WebSocketService.init(ENDPOINTS.ALARMS_ENDPOINT);
+        WebSocketService.open();
+    }, []);
+
     const clickHandler = () => {
         triggerTransitionComms();
         setAreNewMessages(false);
+    };
+
+    const handleOnClick = () => {
+        resolveAlarms();
+        WebSocketService.sendMessage(resolveAlarmsMessage);
     };
 
     return (
@@ -50,7 +63,7 @@ const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat, 
                         <span>Resolve alarms:</span>
                         <Toggle
                             checked={checkedBasedOnAllAlarms(alarms)}
-                            onClick={() => resolveAlarms()}
+                            onClick={handleOnClick}
                             className={styles.alarms}
                         />
                     </>

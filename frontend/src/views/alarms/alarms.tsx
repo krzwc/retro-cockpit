@@ -7,7 +7,7 @@ import { iRootState, Dispatch } from 'resources/store/store';
 import { Alarm } from 'resources/store/models/alarms';
 import Toggle from 'components/toggle';
 import { classNames } from 'common/helpers';
-import WebSocketService, { ENDPOINTS } from 'common/services/websocket-service';
+import WebSocketService, { ENDPOINTS, MESSAGE_TYPES } from 'common/services/websocket-service';
 
 import styles from './style.scss';
 
@@ -17,7 +17,7 @@ interface AlarmsProps {
     resolveAlarm(date: string): Action;
 }
 
-const messageEncoder = (messageString: string, type: string) => {
+const messageEncoder = (messageString: string, type: MESSAGE_TYPES) => {
     return { time: messageString, type };
 };
 
@@ -30,7 +30,7 @@ const Alarms: FunctionComponent<AlarmsProps> = ({ data, updateData, resolveAlarm
 
     const handleOnClick = (alarm: Alarm) => () => {
         resolveAlarm(alarm.time);
-        WebSocketService.sendMessage(messageEncoder(alarm.time, 'RESOLVE_ALARM'));
+        WebSocketService.sendMessage(messageEncoder(alarm.time, MESSAGE_TYPES.RESOLVE_ALARM));
     };
 
     return (

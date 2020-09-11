@@ -1,2 +1,2 @@
 export { default } from './websocket-service';
-export { ENDPOINTS } from './consts';
+export { ENDPOINTS, MESSAGE_TYPES } from './consts';
