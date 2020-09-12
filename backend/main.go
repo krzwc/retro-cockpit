@@ -101,7 +101,14 @@ func handleResolveAlarm(ws *websocket.Conn) {
 		log.Println(err)
 		return
 	}
-	fmt.Println(resolveAlarm)
+	switch alarmType := resolveAlarm.Type; alarmType {
+	case "RESOLVE_ALARM":
+		fmt.Println("RESOLVE_ALARM")
+	case "RESOLVE_ALARMS":
+		fmt.Println("RESOLVE_ALARMS")
+	default:
+		fmt.Println("Unknown message type")
+	}
 }
 
 func handleAlarms(w http.ResponseWriter, r *http.Request) {
