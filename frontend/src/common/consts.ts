@@ -1,3 +1,5 @@
+export const ENDPOINTS_HOST = "ws://localhost:8000"
+
 export enum REQUEST_STATUSES {
     PENDING = 'PENDING',
     SUCCESS = 'SUCCESS',

@@ -9,10 +9,7 @@
     "________________________________Code Linting________________________________": "",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "________________________________Code testing________________________________": "",
-    "test": "jest --config=jest.config.json",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "cypress:run:spec": "npm run cypress:run -- --headless --spec \"cypress/integration/sample_spec.ts\""
+    "test": "jest --config=jest.config.json"
   },
   "husky": {
     "hooks": {
@@ -46,12 +43,10 @@
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",
-    "cypress": "^4.10.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-prettier": "^3.1.4",
     "fetch-mock": "^9.10.3",
     "file-loader": "^6.0.0",

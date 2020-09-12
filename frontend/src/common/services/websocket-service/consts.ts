@@ -1,8 +1,10 @@
-export enum ENDPOINTS {
-    ALARMS_ENDPOINT = 'ws://localhost:8000/alarms',
-    PB_METRICS_ENDPOINT = 'ws://localhost:8000/pbmetrics',
-    BC_METRICS_ENDPOINT = 'ws://localhost:8000/bcmetrics',
-    CHAT = 'ws://localhost:8000/chat',
+import { ENDPOINTS_HOST } from 'common/consts'
+
+export const ENDPOINTS = {
+    ALARMS_ENDPOINT: ENDPOINTS_HOST + '/alarms',
+    PB_METRICS_ENDPOINT: ENDPOINTS_HOST + '/pbmetrics',
+    BC_METRICS_ENDPOINT: ENDPOINTS_HOST + '/bcmetrics',
+    CHAT: ENDPOINTS_HOST + '/chat',
 }
 
 export enum MESSAGE_TYPES {

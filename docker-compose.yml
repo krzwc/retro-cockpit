@@ -110,7 +110,6 @@ services:
             - PASSWORD=password
         restart: always
         
-
     golang-db-connection:
         build:
             context: .
@@ -125,6 +124,35 @@ services:
             - USER=postgres
             - PASSWORD=password
         restart: always
+    
+    backend:
+        build:
+            context: .
+            dockerfile: docker/backend/Dockerfile 
+        depends_on:
+            - kafka-alarms-consumer
+            - timescaledb
+        ports:
+            - "8000:8000"
+        environment:
+            - HOST=timescaledb
+            - PORT=5432
+            - DB_NAME=retro_cockpit
+            - USER=postgres
+            - PASSWORD=password
+        restart: always
+    
+    frontend:
+        build:
+            context: .
+            dockerfile: docker/frontend/Dockerfile
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules/
+        ports:
+            - "3000:3000"
+        depends_on:
+            - backend
 
 volumes:
     db-data:
