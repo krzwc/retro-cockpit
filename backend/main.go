@@ -8,28 +8,84 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/jinzhu/now"
 )
 
+var db *gorm.DB //database
+
 // Alarm struct
-type Alarm struct {
+// type Alarm struct {
+// 	Time     string `json:"time"`
+// 	Severity string `json:"severity"`
+// 	Resolved bool   `json:"resolved"`
+// }
+
+// PB_Metric struct
+// type PB_Metric struct {
+// 	Pb        string `json:"pb"`
+// 	Value     int    `json:"value"`
+// 	Timestamp string `json:"timestamp"`
+// }
+
+// BC_Metric struct
+// type BC_Metric struct {
+// 	Core      string `json:"core"`
+// 	Freq0     int    `json:"freq0"`
+// 	Freq1     int    `json:"freq1"`
+// 	Timestamp string `json:"timestamp"`
+// }
+
+// AlarmModel struct
+type Alarms struct {
+	gorm.Model
+
+	Time     string
+	Severity string
+	Resolved bool
+}
+
+// AlarmMsg struct
+type AlarmMsg struct {
 	Time     string `json:"time"`
 	Severity string `json:"severity"`
 	Resolved bool   `json:"resolved"`
 }
 
-// PB_Metric struct
-type PB_Metric struct {
+// PB_Metrics struct
+type PB_Metrics struct {
+	gorm.Model
+
+	Pb        string
+	Value     int
+	Timestamp string
+}
+
+// PB_MetricMsg struct
+type PB_MetricMsg struct {
 	Pb        string `json:"pb"`
 	Value     int    `json:"value"`
 	Timestamp string `json:"timestamp"`
 }
 
-// BC_Metric struct
-type BC_Metric struct {
+// BC_Metrics struct
+type BC_Metrics struct {
+	gorm.Model
+
+	Core      string
+	Freq0     int
+	Freq1     int
+	Timestamp string
+}
+
+// BC_MetricMsg struct
+type BC_MetricMsg struct {
 	Core      string `json:"core"`
 	Freq0     int    `json:"freq0"`
 	Freq1     int    `json:"freq1"`
@@ -76,12 +132,32 @@ func randomMetricName(group string, metricCount int) string {
 	return group + strconv.Itoa(randomInRange(metricCount))
 }
 
+func openDb() {
+	HOST := os.Getenv("HOST")
+	PORT := os.Getenv("PORT")
+	DB_NAME := os.Getenv("DB_NAME")
+	USER := os.Getenv("USER")
+	PASSWORD := os.Getenv("PASSWORD")
+
+	conn, err := gorm.Open("postgres", "host="+HOST+" port="+PORT+" dbname="+DB_NAME+" user="+USER+" password="+PASSWORD+" sslmode=disable")
+	if err != nil {
+		fmt.Print(err)
+	}
+	db = conn
+	db.Debug().AutoMigrate(&Alarms{}, &PB_Metrics{}, &BC_Metrics{}) //Database migration
+	fmt.Println("Successfully connected!")
+}
+
 func main() {
+	// Open db
+	openDb()
 	// Configure websocket routes
 	http.HandleFunc("/alarms", handleAlarms)
 	http.HandleFunc("/pbmetrics", handlePBMetrics)
 	http.HandleFunc("/bcmetrics", handleBCMetrics)
 	http.HandleFunc("/chat", handleChat)
+
+	defer db.Close()
 
 	// Start listening for incoming chat messages
 	/* go handleMessages() */
@@ -123,33 +199,25 @@ func handleAlarms(w http.ResponseWriter, r *http.Request) {
 	// Register our new client
 	clients[ws] = true
 
-	/* for {
-		var msg Message
-		// Read in a new message as JSON and map it to a Message object
-		err := ws.ReadJSON(&msg)
-		if err != nil {
-			log.Printf("error: %v", err)
-			delete(clients, ws)
-			break
-		}
-		// Send the newly received message to the broadcast channel
-		broadcast <- msg
-	} */
-	/* err = ws.WriteMessage(websocket.TextMessage, []byte("hi")) */
-
-	var alarm Alarm
+	var alarms []Alarms
+	lastTimestamp := now.BeginningOfMinute()
 	for {
 		go handleResolveAlarm(ws)
-		alarm = Alarm{getTime(), randomSeverity(), false}
-		err = ws.WriteJSON(alarm)
+		db.Where("updated_at > ?", lastTimestamp).Find(&alarms)
+		for _, alarm := range alarms {
+			err = ws.WriteJSON(AlarmMsg{alarm.Time, alarm.Severity, alarm.Resolved})
+			if err != nil {
+				log.Printf("Websocket error: %s", err)
+				ws.Close()
+			}
+		}
+		lastTimestamp, err = now.Parse(alarms[len(alarms)-1].Time)
 		if err != nil {
-			log.Printf("Websocket error: %s", err)
-			ws.Close()
+			lastTimestamp = now.BeginningOfMinute()
 		}
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
-
 }
 
 func handlePBMetrics(w http.ResponseWriter, r *http.Request) {
@@ -163,16 +231,24 @@ func handlePBMetrics(w http.ResponseWriter, r *http.Request) {
 
 	// Register our new client
 	clients[ws] = true
-	var pbMetric PB_Metric
+
+	var pbMetrics []PB_Metrics
+	lastTimestamp := now.BeginningOfMinute()
 	for {
-		pbMetric = PB_Metric{randomMetricName("pb", 5), randomInRange(100), getTime()}
-		err = ws.WriteJSON(pbMetric)
+		db.Where("updated_at > ?", lastTimestamp).Find(&pbMetrics)
+		for _, pbMetric := range pbMetrics {
+			err = ws.WriteJSON(PB_MetricMsg{pbMetric.Pb, pbMetric.Value, pbMetric.Timestamp})
+			if err != nil {
+				log.Printf("Websocket error: %s", err)
+				ws.Close()
+			}
+		}
+		lastTimestamp, err = now.Parse(pbMetrics[len(pbMetrics)-1].Timestamp)
 		if err != nil {
-			log.Printf("Websocket error: %s", err)
-			ws.Close()
+			lastTimestamp = now.BeginningOfMinute()
 		}
 
-		time.Sleep(10 * time.Second)
+		time.Sleep(15 * time.Second)
 	}
 }
 
@@ -187,16 +263,24 @@ func handleBCMetrics(w http.ResponseWriter, r *http.Request) {
 
 	// Register our new client
 	clients[ws] = true
-	var bcMetric BC_Metric
+
+	var bcMetrics []BC_Metrics
+	lastTimestamp := now.BeginningOfMinute()
 	for {
-		bcMetric = BC_Metric{randomMetricName("core", 10), randomInRange(100), randomInRange(100), getTime()}
-		err = ws.WriteJSON(bcMetric)
+		db.Where("updated_at > ?", lastTimestamp).Find(&bcMetrics)
+		for _, bcMetric := range bcMetrics {
+			err = ws.WriteJSON(BC_MetricMsg{bcMetric.Core, bcMetric.Freq0, bcMetric.Freq1, bcMetric.Timestamp})
+			if err != nil {
+				log.Printf("Websocket error: %s", err)
+				ws.Close()
+			}
+		}
+		lastTimestamp, err = now.Parse(bcMetrics[len(bcMetrics)-1].Timestamp)
 		if err != nil {
-			log.Printf("Websocket error: %s", err)
-			ws.Close()
+			lastTimestamp = now.BeginningOfMinute()
 		}
 
-		time.Sleep(7 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
 
