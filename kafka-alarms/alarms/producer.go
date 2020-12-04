@@ -1,7 +1,6 @@
 package alarms
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/Shopify/sarama"
@@ -9,7 +8,6 @@ import (
 
 // Producer creates a kafka producer
 func Producer() {
-	fmt.Print(KafkaServer)
 	syncProducer, err := sarama.NewSyncProducer([]string{KafkaServer}, nil)
 	if err != nil {
 		panic(err)
@@ -26,6 +24,6 @@ func Producer() {
 			panic(err)
 		}
 
-		time.Sleep(3 * time.Second)
+		time.Sleep(timeout * time.Second)
 	}
 }

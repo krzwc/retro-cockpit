@@ -8,3 +8,6 @@ var KafkaServer = os.Getenv("KAFKA_CONNECTION_STRING")
 
 // KafkaTopic constant
 const KafkaTopic = "Alarms"
+
+//timeout in seconds
+const timeout = 30

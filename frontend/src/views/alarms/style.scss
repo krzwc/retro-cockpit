@@ -4,8 +4,8 @@
     @include center('horizontally');
 
     tr td:nth-of-type(2) {
-        @include center;
         height: 100%;
+        text-align: center;
 
         img {
             width: 42px;
@@ -17,4 +17,3 @@
 .toggle {
     text-align: center;
 }
-

@@ -1,159 +1,159 @@
 ---
-version: '3'
+version: "3"
 
 services:
-    # selenium-tests:
-    #     build:
-    #       context: .
-    #       dockerfile: docker/selenium-tests/Dockerfile
-    zookeeper:
-        image: 'bitnami/zookeeper:latest'
-        ports:
-        - '2181:2181'
-        environment:
-        - ALLOW_ANONYMOUS_LOGIN=yes
+  # selenium-tests:
+  #     build:
+  #       context: .
+  #       dockerfile: docker/selenium-tests/Dockerfile
+  zookeeper:
+    image: "bitnami/zookeeper:latest"
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
 
-    kafka-broker:
-        image: 'bitnami/kafka:latest' 
-        container_name: kafka-broker
-        ports:
-        - '9092:9092'
-        environment:
-        - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-        - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-broker:9092
-        - ALLOW_PLAINTEXT_LISTENER=yes
-        depends_on:
-        - zookeeper
+  kafka-broker:
+    image: "bitnami/kafka:latest"
+    container_name: kafka-broker
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-broker:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
 
-    timescaledb:
-        build:
-          context: .
-          dockerfile: docker/timescaledb/Dockerfile
-        container_name: timescaledb
-        volumes:
-            - ./db-data:/var/lib/postgresql/data
-        ports:
-            - "5432:5432"
-        restart: unless-stopped
-    
-    pgadmin:
-        image: dpage/pgadmin4:4.25
-        depends_on: 
-            - timescaledb
-        environment:
-            PGADMIN_DEFAULT_EMAIL: admin@ro.ot
-            PGADMIN_DEFAULT_PASSWORD: password
-            PGADMIN_LISTEN_PORT: 80
-        ports:
-            - "8080:80"
-        volumes:
-            - ./pgadmin-data:/var/lib/pgadmin
-        links:
-            - "timescaledb:pgsql-server"
-        restart: unless-stopped
-    
-    kafka-alarms:
-        build:
-            context: .
-            dockerfile: docker/kafka-alarms/Dockerfile
-        depends_on:
-            - zookeeper
-            - kafka-broker
-        environment:
-            - KAFKA_CONNECTION_STRING=kafka-broker:9092
-        restart: always
+  timescaledb:
+    build:
+      context: .
+      dockerfile: docker/timescaledb/Dockerfile
+    container_name: timescaledb
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
 
-    kafka-alarms-consumer:
-        build:
-            context: .
-            dockerfile: docker/kafka-alarms-consumer/Dockerfile 
-        depends_on:
-            - zookeeper
-            - kafka-broker
-            - kafka-alarms
-            - timescaledb
-        environment:
-            - KAFKA_CONNECTION_STRING=kafka-broker:9092
-            - HOST=timescaledb
-            - PORT=5432
-            - DB_NAME=retro_cockpit
-            - USER=postgres
-            - PASSWORD=password
-        restart: always
-    
-    kafka-metrics:
-        build:
-            context: .
-            dockerfile: docker/kafka-metrics/Dockerfile
-        depends_on:
-            - zookeeper
-            - kafka-broker
-        environment:
-            - KAFKA_CONNECTION_STRING=kafka-broker:9092
-        restart: always
-    
-    kafka-metrics-consumer:
-        build:
-            context: .
-            dockerfile: docker/kafka-metrics-consumer/Dockerfile 
-        depends_on:
-            - zookeeper
-            - kafka-broker
-            - kafka-metrics
-            - timescaledb
-        environment:
-            - KAFKA_CONNECTION_STRING=kafka-broker:9092
-            - HOST=timescaledb
-            - PORT=5432
-            - DB_NAME=retro_cockpit
-            - USER=postgres
-            - PASSWORD=password
-        restart: always
-        
-    # golang-db-connection:
-    #     build:
-    #         context: .
-    #         dockerfile: docker/golang-db-connection/Dockerfile 
-    #     depends_on:
-    #         - kafka-alarms-consumer
-    #         - timescaledb
-    #     environment:
-    #         - HOST=timescaledb
-    #         - PORT=5432
-    #         - DB_NAME=retro_cockpit
-    #         - USER=postgres
-    #         - PASSWORD=password
-    #     restart: always
-    
-    backend:
-        build:
-            context: .
-            dockerfile: docker/backend/Dockerfile 
-        depends_on:
-            - kafka-alarms-consumer
-            - timescaledb
-        ports:
-            - "8000:8000"
-        environment:
-            - HOST=timescaledb
-            - PORT=5432
-            - DB_NAME=retro_cockpit
-            - USER=postgres
-            - PASSWORD=password
-        restart: always
-    
-    frontend:
-        build:
-            context: .
-            dockerfile: docker/frontend/Dockerfile
-        volumes:
-            - ./frontend:/app
-            - /app/node_modules/
-        ports:
-            - "3000:3000"
-        depends_on:
-            - backend
+  pgadmin:
+    image: dpage/pgadmin4:4.25
+    depends_on:
+      - timescaledb
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ro.ot
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8080:80"
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+    links:
+      - "timescaledb:pgsql-server"
+    restart: unless-stopped
+
+  kafka-alarms:
+    build:
+      context: .
+      dockerfile: docker/kafka-alarms/Dockerfile
+    depends_on:
+      - zookeeper
+      - kafka-broker
+    environment:
+      - KAFKA_CONNECTION_STRING=kafka-broker:9092
+    restart: always
+
+  kafka-alarms-consumer:
+    build:
+      context: .
+      dockerfile: docker/kafka-alarms-consumer/Dockerfile
+    depends_on:
+      - zookeeper
+      - kafka-broker
+      - kafka-alarms
+      - timescaledb
+    environment:
+      - KAFKA_CONNECTION_STRING=kafka-broker:9092
+      - HOST=timescaledb
+      - PORT=5432
+      - DB_NAME=retro_cockpit
+      - USER=postgres
+      - PASSWORD=password
+    restart: always
+
+  kafka-metrics:
+    build:
+      context: .
+      dockerfile: docker/kafka-metrics/Dockerfile
+    depends_on:
+      - zookeeper
+      - kafka-broker
+    environment:
+      - KAFKA_CONNECTION_STRING=kafka-broker:9092
+    restart: always
+
+  kafka-metrics-consumer:
+    build:
+      context: .
+      dockerfile: docker/kafka-metrics-consumer/Dockerfile
+    depends_on:
+      - zookeeper
+      - kafka-broker
+      - kafka-metrics
+      - timescaledb
+    environment:
+      - KAFKA_CONNECTION_STRING=kafka-broker:9092
+      - HOST=timescaledb
+      - PORT=5432
+      - DB_NAME=retro_cockpit
+      - USER=postgres
+      - PASSWORD=password
+    restart: always
+
+  # golang-db-connection:
+  #     build:
+  #         context: .
+  #         dockerfile: docker/golang-db-connection/Dockerfile
+  #     depends_on:
+  #         - kafka-alarms-consumer
+  #         - timescaledb
+  #     environment:
+  #         - HOST=timescaledb
+  #         - PORT=5432
+  #         - DB_NAME=retro_cockpit
+  #         - USER=postgres
+  #         - PASSWORD=password
+  #     restart: always
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    depends_on:
+      - kafka-alarms-consumer
+      - timescaledb
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=timescaledb
+      - PORT=5432
+      - DB_NAME=retro_cockpit
+      - USER=postgres
+      - PASSWORD=password
+    restart: always
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
 
 volumes:
-    db-data:
-    pgadmin-data:
+  db-data:
+  pgadmin-data:
