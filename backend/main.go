@@ -151,14 +151,15 @@ func openDb() {
 func main() {
 	// Open db
 	openDb()
+	
 	// Configure websocket routes
 	http.HandleFunc("/alarms", handleAlarms)
 	http.HandleFunc("/pbmetrics", handlePBMetrics)
 	http.HandleFunc("/bcmetrics", handleBCMetrics)
 	http.HandleFunc("/chat", handleChat)
-
+	
 	defer db.Close()
-
+	
 	// Start listening for incoming chat messages
 	/* go handleMessages() */
 
@@ -193,11 +194,11 @@ func handleAlarms(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Make sure we close the connection when the function returns
+
 	defer ws.Close()
 
 	// Register our new client
-	clients[ws] = true
+	// clients[ws] = true
 
 	var alarms []Alarms
 	lastTimestamp := now.BeginningOfMinute()
@@ -226,11 +227,11 @@ func handlePBMetrics(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Make sure we close the connection when the function returns
+
 	defer ws.Close()
 
 	// Register our new client
-	clients[ws] = true
+	// clients[ws] = true
 
 	var pbMetrics []PB_Metrics
 	lastTimestamp := now.BeginningOfMinute()
@@ -258,11 +259,11 @@ func handleBCMetrics(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Make sure we close the connection when the function returns
+
 	defer ws.Close()
 
 	// Register our new client
-	clients[ws] = true
+	// clients[ws] = true
 
 	var bcMetrics []BC_Metrics
 	lastTimestamp := now.BeginningOfMinute()
@@ -290,7 +291,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Make sure we close the connection when the function returns
+
 	defer ws.Close()
 
 	// Register our new client

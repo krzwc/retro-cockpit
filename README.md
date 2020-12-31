@@ -4,6 +4,8 @@ To launch run `docker-compose up`<br />
 Please be patient - currently spinning it up takes up to 5min :/ <br />
 The app should be running at [http://localhost:3000](http://localhost:3000).
 
+![screencase](./assets/screencast.gif)
+
 ## Tricky parts solved - for future reference
 
 - state management with rematch
@@ -31,10 +33,8 @@ The app should be running at [http://localhost:3000](http://localhost:3000).
 
 ## Known bugs
 
-- [ ] 6 progress bar kpi's instead of 5
 - [ ] alarm resolving
 - [ ] no overflow: hidden for the top container
-- [ ] `affirmative` is reported 2 times
 
 ## Leaving be
 
