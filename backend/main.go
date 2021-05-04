@@ -112,13 +112,13 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-func randomSeverity() string {
-	if v := rand.Intn(11); v > 7 {
-		return "critical"
-	}
+// func randomSeverity() string {
+// 	if v := rand.Intn(11); v > 7 {
+// 		return "critical"
+// 	}
 
-	return ""
-}
+// 	return ""
+// }
 
 func getTime() string {
 	return time.Now().Format(time.RFC1123Z)
@@ -128,9 +128,9 @@ func randomInRange(max int) int {
 	return rand.Intn(max)
 }
 
-func randomMetricName(group string, metricCount int) string {
-	return group + strconv.Itoa(randomInRange(metricCount))
-}
+// func randomMetricName(group string, metricCount int) string {
+// 	return group + strconv.Itoa(randomInRange(metricCount))
+// }
 
 func openDb() {
 	HOST := os.Getenv("HOST")
