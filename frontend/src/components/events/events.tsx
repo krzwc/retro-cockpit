@@ -55,7 +55,7 @@ const Events: FunctionComponent<EventsProps> = ({ triggerTransitionComms, chat, 
                         onClick={clickHandler}
                         className={classNames('nes-btn', 'is-warning', 'nes-pointer')}
                     >
-                        Incoming message
+                        New msgs
                     </button>
                 )}
                 {!isEmpty(alarms) && (

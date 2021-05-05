@@ -1,4 +1,5 @@
 import { ModelConfig, Models, RematchDispatch, ModelReducers, ModelEffects } from '@rematch/core';
+import { isEmpty } from 'lodash-es';
 /* import { convertTimestamp } from 'common/services/time-service'; */
 
 /* const generateAlarm = () => {
@@ -32,7 +33,14 @@ export const alarms: AlarmsModel = {
     name: 'alarms',
     reducers: {
         updateData: (state: AlarmsState, payload: Alarm) => {
-            return [payload, ...state];
+            if (isEmpty(state)) {
+                return [payload];
+            }
+            const lastSavedDate = state[0].time;
+            if (new Date(payload.time) > new Date(lastSavedDate)) {
+                return [payload, ...state];
+            }
+            return state;
         },
         resolveAlarm: (state: AlarmsState, payload) => {
             return state.map((item) => (item.time === payload ? { ...item, resolved: true } : item));

@@ -3,7 +3,7 @@
 package main
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
@@ -156,7 +156,7 @@ func main() {
 	http.HandleFunc("/alarms", handleAlarms)
 	http.HandleFunc("/pbmetrics", handlePBMetrics)
 	http.HandleFunc("/bcmetrics", handleBCMetrics)
-	http.HandleFunc("/chat", handleChat)
+	// http.HandleFunc("/chat", handleChat)
 	
 	defer db.Close()
 	
@@ -285,7 +285,7 @@ func handleBCMetrics(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleChat(w http.ResponseWriter, r *http.Request) {
+/* func handleChat(w http.ResponseWriter, r *http.Request) {
 	// Upgrade initial GET request to a websocket
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-}
+} */
 
 /* func handleMessages() {
 	for {
