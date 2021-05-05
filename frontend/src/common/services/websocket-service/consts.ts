@@ -1,11 +1,11 @@
-import { ENDPOINTS_HOST } from 'common/consts'
+import { ENDPOINTS_HOST, CHAT_HOST } from 'common/consts';
 
 export const ENDPOINTS = {
     ALARMS_ENDPOINT: ENDPOINTS_HOST + '/alarms',
     PB_METRICS_ENDPOINT: ENDPOINTS_HOST + '/pbmetrics',
     BC_METRICS_ENDPOINT: ENDPOINTS_HOST + '/bcmetrics',
-    CHAT: ENDPOINTS_HOST + '/chat',
-}
+    CHAT: CHAT_HOST,
+};
 
 export enum MESSAGE_TYPES {
     RESOLVE_ALARM = 'RESOLVE_ALARM',

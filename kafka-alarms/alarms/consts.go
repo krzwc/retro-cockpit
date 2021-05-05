@@ -10,4 +10,4 @@ var KafkaServer = os.Getenv("KAFKA_CONNECTION_STRING")
 const KafkaTopic = "Alarms"
 
 //timeout in seconds
-const timeout = 30
+const timeout = 50

@@ -1,7 +1,7 @@
 @import './mixins.scss';
 @import '../../assets/fonts/kongtext/kongtext.css';
 @import '../../node_modules/nes.css/css/nes.css';
-@import './nes-overrride.scss';
+@import './nes-override.scss';
 
 body {
     overflow-y: hidden;
@@ -19,7 +19,19 @@ body {
     @include center();
 }
 
-a, p, span, div, table, tr, td, h1, h2, h3, h4, h5, h6 {
+a,
+p,
+span,
+div,
+table,
+tr,
+td,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Kongtext', monospace;
     font-weight: 300;
-  }
+}

@@ -1,4 +1,5 @@
-export const ENDPOINTS_HOST = "ws://localhost:8000"
+export const ENDPOINTS_HOST = 'ws://localhost:8000';
+export const CHAT_HOST = 'ws://localhost:3030';
 
 export enum REQUEST_STATUSES {
     PENDING = 'PENDING',
@@ -12,7 +13,7 @@ export const URLS = {
     COMMS: 'comms',
     METRICS: 'metrics',
     ALARMS: 'alarms',
-}
+};
 
 export const ROUTE_NAMES = {
     HOME: 'home',
@@ -20,7 +21,7 @@ export const ROUTE_NAMES = {
     COMMS: 'comms',
     METRICS: 'metrics',
     ALARMS: 'alarms',
-}
+};
 
 export const ROUTE_URLS = {
     HOME: '/home',
@@ -28,4 +29,4 @@ export const ROUTE_URLS = {
     COMMS: '/comms',
     METRICS: '/metrics',
     ALARMS: '/alarms',
-}
+};
