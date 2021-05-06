@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { UIView /* UISref, UISrefActive */ } from '@uirouter/react';
 
 class Home extends React.Component<any, any> {

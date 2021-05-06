@@ -9,8 +9,5 @@ export enum TIMEFORMATS {
 }
 
 export const convertTimestamp = (date: Time, format: string = TIMEFORMATS.NATURAL_DATE_FORMAT) => {
-    return moment
-        .utc(date)
-        .local()
-        .format(format);
+    return moment.utc(date).local().format(format);
 };

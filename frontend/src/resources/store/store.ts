@@ -1,25 +1,24 @@
-import { init, RematchStore, RematchRootState, RematchDispatch } from '@rematch/core'
-import { count, chat, metrics, alarms, RootModel } from './models'
+import { init, RematchStore, RematchRootState, RematchDispatch } from '@rematch/core';
+import { count, chat, metrics, alarms, RootModel } from './models';
 // import { routerModel } from './models/routerModel'
 // import {routerMiddleware, routerReducer} from "../router/router";
-import routerMiddleware from '../router/middleware'
-import { routerReducer } from '../router/reducer'
-
+import routerMiddleware from '../router/middleware';
+import { routerReducer } from '../router/reducer';
 
 const store: RematchStore = init({
     models: { count, chat, metrics, alarms },
     redux: {
         middlewares: [routerMiddleware],
         reducers: {
-            router: routerReducer
+            router: routerReducer,
         },
     },
 });
 
 export const { dispatch } = store;
 
-export default store
+export default store;
 
-export type Store = typeof store
-export type Dispatch = RematchDispatch<RootModel>
-export type iRootState = RematchRootState<RootModel>
+export type Store = typeof store;
+export type Dispatch = RematchDispatch<RootModel>;
+export type iRootState = RematchRootState<RootModel>;

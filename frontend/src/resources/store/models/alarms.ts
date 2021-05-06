@@ -17,7 +17,7 @@ export interface AlarmsModel extends ModelConfig {
     effects?: (dispatch: RematchDispatch<Models>) => ModelEffects<any>;
 }
 
-export interface Alarm {
+export interface Alarm extends Record<string, unknown> {
     time: string;
     severity: string;
     resolved: boolean;

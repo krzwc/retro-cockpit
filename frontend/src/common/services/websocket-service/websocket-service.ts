@@ -7,37 +7,37 @@ import { Action } from 'redux';
 export default class WebSocketService {
     private static ws: WebSocket;
     private static endpoint: string;
-    
+
     static init(endpoint: string) {
-      this.endpoint = endpoint;
-      this.ws = new WebSocket(endpoint);
+        this.endpoint = endpoint;
+        this.ws = new WebSocket(endpoint);
     }
 
     static open() {
         this.ws.addEventListener('open', () => {
             // on connecting, do nothing but log it to the console
             console.log('connected');
-        }) 
+        });
         this.ws.addEventListener('close', () => {
             // on connecting, do nothing but log it to the console
             console.log('disconnected');
             // automatically try to reconnect on connection loss
             this.init(this.endpoint);
-        })        
+        });
     }
 
-    static onMessage(handler: (message: object) => Action) {
+    static onMessage(handler: (message: Record<string, unknown>) => Action) {
         // on receiving a message, use the passed handler
-      this.ws.addEventListener('message', (e: MessageEvent) => {
-        const message = JSON.parse(e.data);
-        handler(message)
-      });
+        this.ws.addEventListener('message', (e: MessageEvent) => {
+            const message = JSON.parse(e.data);
+            handler(message);
+        });
     }
 
-    static sendMessage(message: object, handler?: (message: object) => Action) {
+    static sendMessage(message: Record<string, unknown>, handler?: (message: Record<string, unknown>) => Action) {
         this.ws.send(JSON.stringify(message));
-        if(handler) {
-          handler(message);
+        if (handler) {
+            handler(message);
         }
     }
-  }
+}

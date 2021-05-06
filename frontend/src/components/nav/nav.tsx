@@ -15,7 +15,7 @@ interface NavStateToProps {
     routeStateName: string;
 }
 
-const mapStateToProps: MapStateToProps<NavStateToProps, object, StoreState> = (state) => ({
+const mapStateToProps: MapStateToProps<NavStateToProps, Record<string, unknown>, StoreState> = (state) => ({
     routeStateName: activeStateNameSelector(state),
 });
 

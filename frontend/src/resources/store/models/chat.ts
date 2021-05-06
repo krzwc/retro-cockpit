@@ -1,4 +1,4 @@
-import { ModelConfig, Models, RematchDispatch, ModelReducers, ModelEffects } from "@rematch/core";
+import { ModelConfig, Models, RematchDispatch, ModelReducers, ModelEffects } from '@rematch/core';
 
 export interface Message {
     name: string;
@@ -10,18 +10,18 @@ interface ChatState {
     chat: Message[];
 }
 
-export interface ChatModel extends ModelConfig{
+export interface ChatModel extends ModelConfig {
     state: ChatState;
     name: string;
     reducers: ModelReducers;
-    effects?: (dispatch: RematchDispatch<Models>) => ModelEffects<any>
+    effects?: (dispatch: RematchDispatch<Models>) => ModelEffects<any>;
 }
 
 export const DEFAULT_USER = 'User1';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: { name: string; chat: Message[] } = {
     name: DEFAULT_USER,
-    chat: [] as Message[],
+    chat: [],
 };
 
 export const chat: ChatModel = {
@@ -29,7 +29,7 @@ export const chat: ChatModel = {
     name: 'chat',
     reducers: {
         addMessage: (state: ChatState, payload: Message) => {
-            return { ...state, chat: [...state.chat, payload] }
+            return { ...state, chat: [...state.chat, payload] };
         },
     },
 };

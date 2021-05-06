@@ -14,7 +14,7 @@ import { iRootState, Dispatch } from 'resources/store/store';
 
 import WebSocketService, { ENDPOINTS } from 'common/services/websocket-service';
 
-export interface Message {
+export interface Message extends Record<string, unknown> {
     name: string;
     text: string;
 }

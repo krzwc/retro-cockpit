@@ -1,2 +1,1 @@
-export const classNames = (...args: Array<string | boolean | undefined>) =>
-  args.join(" ");
+export const classNames = (...args: Array<string | boolean | undefined>) => args.join(' ');
