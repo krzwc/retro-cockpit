@@ -21,7 +21,6 @@ The app should be running at [http://localhost:3000](http://localhost:3000).
 
 - [ ] add alarm resolving on the BE
 - [ ] add alarms retention policy
-- [ ] proper recconecting of websocket server after losing connection
 - [ ] elimination on non-necessary rerenders
 - [ ] speeding up docker build process
 - [ ] env-ization
@@ -29,7 +28,7 @@ The app should be running at [http://localhost:3000](http://localhost:3000).
 - [ ] add autoprefixer
 - [ ] add generic data models
 - [ ] how to add configuration of timescale server container to pgadmin container
-- [ ] add `wait` to containers to eliminate restaring them
+- [ ] add `wait` to containers to eliminate restarting them
 
 ## Known bugs
 
